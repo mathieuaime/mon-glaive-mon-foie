@@ -1,55 +1,51 @@
 package com.mgmf.monglaivemonfoie.util;
 
-import android.support.annotation.NonNull;
-
-import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.model.Role;
-import com.mgmf.monglaivemonfoie.validator.DiceValidator;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Util class for the roles.
+ * @author Mathieu Aimé
  */
 
 public class RoleUtil {
-    public static Role play(Dice dice1, Dice dice2, Dice specialDice) {
-        DiceValidator.validate(dice1, dice2, specialDice);
 
-        int d1 = Math.max(dice1.getValue(), dice2.getValue());
-        int d2 = Math.min(dice1.getValue(), dice2.getValue());
+    private static final Map<Integer, Role> roles;
 
-        if (d1 == d2) {
-            if (d1 == specialDice.getValue()) {
-                return getSuperRole(d1 - 1);
-            } else {
-                return d1 > 3 ? Role.Dieu : Role.Heros;
-            }
-        } else if (d1 + d2 == 7) {
-            return Role.Attaque;
-        } else if (d1 + d2 == 6) {
-            return Role.AllDrink;
-        } else {
-            return getRole(d1, d2);
-        }
-    }
+    static {
+        Map<Integer, Role> r = new HashMap<>();
+        r.put(11, Role.Heros);
+        r.put(21, Role.Oracle);
+        r.put(22, Role.Heros);
+        r.put(31, Role.Ecuyer);
+        r.put(32, Role.Prisonnier);
+        r.put(33, Role.Heros);
+        r.put(41, Role.Catin);
+        r.put(42, Role.AllDrink);
+        r.put(43, Role.Attaque);
+        r.put(44, Role.Dieu);
+        r.put(51, Role.AllDrink);
+        r.put(52, Role.Attaque);
+        r.put(53, Role.Aubergiste);
+        r.put(54, Role.Princesse);
+        r.put(55, Role.Dieu);
+        r.put(61, Role.Attaque);
+        r.put(62, Role.Drink);
+        r.put(63, Role.Drink);
+        r.put(64, Role.Drink);
+        r.put(65, Role.Dragon);
+        r.put(66, Role.Dieu);
+        r.put(111, Role.Clochard);
+        r.put(222, Role.Devin);
+        r.put(333, Role.Apprenti);
+        r.put(444, Role.Gourgandine);
+        r.put(555, Role.Imperatrice);
+        r.put(666, Role.Demon);
 
-    @NonNull
-    private static Role getRole(int dice1, int dice2) {
-        switch (dice1) {
-            case 2:
-                return Role.Oracle;
-            case 3:
-                return dice2 == 1 ? Role.Ecuyer : Role.Prisonnier;
-            case 4:
-                return Role.Catin;
-            case 5:
-                return dice2 == 3 ? Role.Aubergiste : Role.Princesse;
-            default:
-                return dice2 == 5 ? Role.Dragon : Role.Drink;
-        }
-    }
-
-    private static Role getSuperRole(int index) {
-        return new Role[]{Role.Clochard, Role.Devin, Role.Apprenti, Role.Gourgandine, Role.Imperatrice, Role.Demon}[index];
+        roles = Collections.unmodifiableMap(r);
     }
 
     public static Role getRoleFromSuperRole(Role role) {
@@ -88,5 +84,9 @@ public class RoleUtil {
             default:
                 return role;
         }
+    }
+
+    public static Map<Integer, Role> getRoles() {
+        return roles;
     }
 }
