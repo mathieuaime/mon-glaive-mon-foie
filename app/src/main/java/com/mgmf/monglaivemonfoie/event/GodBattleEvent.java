@@ -1,26 +1,36 @@
 package com.mgmf.monglaivemonfoie.event;
 
+import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.model.Player;
+import com.mgmf.monglaivemonfoie.model.Role;
+import com.mgmf.monglaivemonfoie.util.DiceUtil;
 
 /**
  * Created by Mathieu on 07/12/2017.
  */
 
 public class GodBattleEvent extends Event {
-    private Player oldGod;
-    private Player player;
+    private static Player getWinner(Player oldGod, Player player) {
+        Dice oldGodDice = new Dice();
+        Dice playerDice = new Dice();
 
-    public GodBattleEvent(Player oldGod, Player player) {
-        super();
-        this.oldGod = oldGod;
-        this.player = player;
+        do {
+            DiceUtil.roll(oldGodDice, playerDice);
+        } while (oldGodDice.getValue() == playerDice.getValue());
+
+        return oldGodDice.getValue() > playerDice.getValue() ? oldGod : player;
     }
 
-    public Player getOldGod() {
-        return oldGod;
-    }
+    @Override
+    public void play(Player... playerSet) {
+        if (playerSet.length > 1) {
+            System.out.println("Bataille de dieux entre " + playerSet[0].getName() + " et " + playerSet[1].getName());
+            Player winner = getWinner(playerSet[0], playerSet[1]);
 
-    public Player getPlayer() {
-        return player;
+            System.out.println(winner.getName() + " a gagné !");
+            winner.addRole(Role.Dieu);
+        } else {
+            throw new IllegalArgumentException("A god battle decideRole must be between 2 players");
+        }
     }
 }
