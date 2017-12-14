@@ -3,22 +3,27 @@ package com.mgmf.monglaivemonfoie.model;
 import java.util.Random;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Model class for a dice
+ *
+ * @author Mathieu Aimé
  */
 
 public class Dice {
-    public static final int FACES = 6;
     private final boolean special;
     private int value;
+
+    public Dice() {
+        this(false);
+    }
 
     public Dice(boolean special) {
         this.special = special;
         this.value = 0;
     }
 
-    public void roll() {
+    public void roll(int faces) {
         Random r = new Random();
-        value = r.nextInt(FACES) + 1;
+        value = r.nextInt(faces) + 1;
     }
 
     public int getValue() {
@@ -27,5 +32,28 @@ public class Dice {
 
     public boolean isSpecial() {
         return special;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dice dice = (Dice) o;
+
+        if (special != dice.special) return false;
+        return value == dice.value;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (special ? 1 : 0);
+        result = 31 * result + value;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return value + " ";
     }
 }

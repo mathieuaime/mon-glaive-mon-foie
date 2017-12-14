@@ -1,7 +1,9 @@
 package com.mgmf.monglaivemonfoie.model;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Enumemrate all the roles.
+ *
+ * @author Mathieu Aimé
  */
 
 public enum Role {

@@ -1,61 +1,49 @@
 package com.mgmf.monglaivemonfoie.model;
 
-import com.mgmf.monglaivemonfoie.util.DiceUtil;
-import com.mgmf.monglaivemonfoie.util.RoleUtil;
-
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Model class for a player
+ *
+ * @author Mathieu Aimé
  */
 
 public class Player {
+
+    private static int numberOfPlayers = 1;
+    private long id;
     private final String name;
     private Set<Role> roles = new HashSet<>();
 
-    public Player() {
-        this("");
+    public Player(String name) {
+        id = numberOfPlayers++;
+        this.name = name;
     }
 
-    public Player(String name) {
-        this.name = name;
+    public long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public Set<Role> getRoles() {
-        return new HashSet<>(roles);
-    }
-
-    public boolean hasRole(Role role) {
-        return roles.contains(role);
+    public boolean hasRole(Role... roles) {
+        return Arrays.stream(roles).anyMatch(this.roles::contains);
     }
 
     public boolean addRole(Role role) {
         return roles.add(role);
     }
 
-    public boolean removeRole(Role role) {
-        return roles.remove(role);
+    public boolean removeRole(Role... roles) {
+        return this.roles.removeAll(Arrays.asList(roles));
     }
 
     public void removeAllRoles() {
         roles.clear();
-    }
-
-    public void play(Dice dice1, Dice dice2, Dice specialDice, Map<Role, Player> rolePlayerMap) {
-        DiceUtil.roll(dice1, dice2, specialDice);
-
-        Role newRole = RoleUtil.play(dice1, dice2, specialDice);
-
-        switch (newRole) {
-
-        }
-
     }
 
     @Override
@@ -71,5 +59,14 @@ public class Player {
     @Override
     public int hashCode() {
         return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }
