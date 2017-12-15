@@ -9,7 +9,9 @@ import com.mgmf.monglaivemonfoie.util.PlayerUtil;
 import java.util.Optional;
 
 /**
- * Created by Mathieu on 07/12/2017.
+ * Event for the attack.
+ *
+ * @author Mathieu Aimé
  */
 
 public class AttackEvent extends Event {

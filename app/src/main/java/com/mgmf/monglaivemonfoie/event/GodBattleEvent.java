@@ -1,12 +1,16 @@
 package com.mgmf.monglaivemonfoie.event;
 
+import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.model.Player;
-import com.mgmf.monglaivemonfoie.model.Role;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
 
+import java.util.Arrays;
+
 /**
- * Created by Mathieu on 07/12/2017.
+ * Event for the god battle.
+ *
+ * @author Mathieu Aimé
  */
 
 public class GodBattleEvent extends Event {
@@ -28,7 +32,7 @@ public class GodBattleEvent extends Event {
             Player winner = getWinner(playerSet[0], playerSet[1]);
 
             System.out.println(winner.getName() + " a gagné !");
-            winner.addRole(Role.Dieu);
+            PlayerDecider.becomeGod(winner, Arrays.asList(playerSet));
         } else {
             throw new IllegalArgumentException("A god battle decideRole must be between 2 players");
         }

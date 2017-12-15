@@ -13,7 +13,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by ranaivoson on 13/12/17.
+ * Unit Tests for the Role Decider.
+ *
+ * @author Mathieu Aimé
  */
 public class RoleDeciderTest {
 

@@ -6,6 +6,7 @@ import com.mgmf.monglaivemonfoie.event.AttackEvent;
 import com.mgmf.monglaivemonfoie.event.GiveDrinkEvent;
 import com.mgmf.monglaivemonfoie.event.GodBattleEvent;
 import com.mgmf.monglaivemonfoie.event.TakeDrinkEvent;
+import com.mgmf.monglaivemonfoie.event.UselessDrinkEvent;
 import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.model.Role;
@@ -14,25 +15,36 @@ import com.mgmf.monglaivemonfoie.util.PlayerUtil;
 import com.mgmf.monglaivemonfoie.util.RoleUtil;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
 /**
- * Created by Mathieu on 14/12/2017.
+ * Contains the logic for the players.
+ *
+ * @author Mathieu Aimé
  */
 
+@SuppressLint("NewApi")
 public class PlayerDecider {
-    @SuppressLint("NewApi")
-    public static void assignRoleToPlayer(Role role, Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players) {
+    private static void assignRoleToPlayer(Role role, Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players) {
         int d1 = Math.max(dice1.getValue(), dice2.getValue());
         int d2 = Math.min(dice1.getValue(), dice2.getValue());
+
+
+        //reassign role if super role
+        if (player.hasRole(RoleUtil.getSuperRoles())) {
+            assignRoleFromSuperRoleToPlayer(player);
+        }
 
         int numberOfThree = DiceUtil.numberOf(3, dice1, dice2, specialDice);
         //if the dices have almost one 3
         if (numberOfThree > 0) {
-            if (!role.equals(Role.Prisonnier) && !player.hasRole(Role.Prisonnier)) {
+            if (!role.equals(Role.Prisonnier)) {
                 PlayerUtil.getPlayerByRole(Role.Prisonnier, players).ifPresent(p -> new TakeDrinkEvent(numberOfThree).play(p));
-            } else {
-                if (player.removeRole(Role.Prisonnier)) {
-                    System.out.println(player.getName() + " n'est plus " + Role.Prisonnier);
+                if (player.hasRole(Role.Prisonnier)) {
+                    if (removeRoleToPlayer(player, Role.Prisonnier) && !role.equals(Role.Attaque)) {
+                        return;
+                    }
                 }
             }
         }
@@ -40,30 +52,30 @@ public class PlayerDecider {
         switch (role) {
             case Heros:
                 if (player.hasRole(Role.Prisonnier, Role.Dieu)) {
-                    System.out.println(player.getName() + ", t'es inutile, tu bois");
-                    new TakeDrinkEvent(specialDice.getValue()).play(player);
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
                 } else {
-                    player.removeRole(Role.Catin, Role.Princesse, Role.Ecuyer);
-                    if (assignRoleToPlayer(role, player.getId(), players)) {
-                        System.out.println(player.getName() + ", t'es inutile, tu bois");
-                        new TakeDrinkEvent(specialDice.getValue()).play(player);
+                    removeRoleToPlayer(player, Role.Princesse, Role.Ecuyer);
+                    if (assignRoleToPlayer(player, role, players)) {
+                        new UselessDrinkEvent(specialDice.getValue()).play(player);
                     }
                 }
                 break;
-            case Catin:
             case Princesse:
             case Ecuyer:
-                if (player.hasRole(Role.Prisonnier, Role.Heros, Role.Dieu) || assignRoleToPlayer(role, player.getId(), players)) {
-                    System.out.println(player.getName() + ", t'es inutile, tu bois");
-                    new TakeDrinkEvent(specialDice.getValue()).play(player);
+                if (player.hasRole(Role.Prisonnier, Role.Heros, Role.Dieu) || assignRoleToPlayer(player, role, players)) {
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
+                }
+                break;
+            case Catin:
+                if (player.hasRole(Role.Prisonnier, Role.Dieu) || assignRoleToPlayer(player, role, players)) {
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
                 }
                 break;
             case Dragon:
             case Oracle:
             case Aubergiste:
-                if (player.hasRole(Role.Prisonnier) || assignRoleToPlayer(role, player.getId(), players)) {
-                    System.out.println(player.getName() + ", t'es inutile, tu bois");
-                    new TakeDrinkEvent(specialDice.getValue()).play(player);
+                if (player.hasRole(Role.Prisonnier) || assignRoleToPlayer(player, role, players)) {
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
                 }
                 break;
             case Prisonnier:
@@ -72,7 +84,7 @@ public class PlayerDecider {
                     player.addRole(role);
                     System.out.println(player.getName() + " devient " + role);
                 } else if (player.hasRole(role)) {
-                    System.out.println(player.getName() + ", tu restes Prisonnier, tu bois, double");
+                    System.out.println(player.getName() + ", tu restes Prisonnier, tu bois, double, bizzut");
                     new TakeDrinkEvent(1).play(player);
                     new TakeDrinkEvent(1).play(player);
                 }
@@ -83,18 +95,23 @@ public class PlayerDecider {
             case Apprenti:
             case Devin:
             case Clochard:
-                if (player.hasRole(Role.Prisonnier) || assignRoleToPlayer(role, player.getId(), players)) {
-                    System.out.println(player.getName() + ", t'es inutile, tu bois");
-                    new TakeDrinkEvent(specialDice.getValue()).play(player);
+                if (player.hasRole(Role.Prisonnier) || assignSuperRoleToPlayer(player, role, players)) {
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
                 }
                 break;
             case Dieu:
                 if (player.hasRole(Role.Prisonnier, Role.Dieu)) {
-                    System.out.println(player.getName() + ", t'es inutile, tu bois");
-                    new TakeDrinkEvent(specialDice.getValue()).play(player);
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
                 } else {
                     if (d1 != 6) {
-                        players.stream().filter(p -> p.hasRole(role)).findFirst().ifPresent(p -> new GodBattleEvent().play(p, player));
+                        Optional<Player> oldGod = players.stream().filter(p -> p.hasRole(role)).findFirst();
+                        if (oldGod.isPresent()) {
+                            new GodBattleEvent().play(oldGod.get(), player);
+                        } else {
+                            becomeGod(player, players);
+                        }
+                    } else {
+                        becomeGod(player, players);
                     }
                 }
                 break;
@@ -111,23 +128,74 @@ public class PlayerDecider {
         }
     }
 
-    private static boolean assignRoleToPlayer(Role role, long id, Collection<Player> players) {
+    public static void becomeGod(Player player, Collection<Player> players) {
+        boolean becomeGod = assignRoleToPlayer(player, Role.Dieu, players);
+        if (!becomeGod) {
+            removeRoleToPlayer(player, Role.Catin, Role.Heros, Role.Ecuyer, Role.Princesse);
+        }
+    }
+
+    private static boolean assignRoleToPlayer(Player player, Role role, Collection<Player> players) {
         boolean useless = true;
 
         if (!PlayerUtil.isRole(RoleUtil.getSuperRoleFromRole(role), players)) {
-            for (Player player : players) {
-                if (player.getId() == id) {
-                    useless = !player.addRole(role);
-                    System.out.println(player.getName() + " devient " + role);
+            for (Player p : players) {
+                if (p.getId() == player.getId()) {
+                    useless = !assignRoleToPlayer(p, role);
                 } else {
-                    if (player.removeRole(RoleUtil.getRoleFromSuperRole(role))) {
-                        System.out.println(player.getName() + " n'est plus " + role);
-                    }
+                    removeRoleToPlayer(p, role);
                 }
             }
         }
 
         return useless;
+    }
+
+    private static boolean assignRoleToPlayer(Player player, Role role) {
+        boolean add = player.addRole(role);
+
+        if (add) {
+            System.out.println(player.getName() + " devient " + role);
+        }
+
+        return add;
+    }
+
+    private static boolean assignSuperRoleToPlayer(Player player, Role role, Collection<Player> players) {
+        boolean useless = player.hasRole(role);
+
+        if (!useless) {
+            assignRoleToPlayer(player, RoleUtil.getRoleFromSuperRole(role), players);
+            player.removeAllRoles();
+            player.addRole(role);
+            System.out.println(player.getName() + " devient " + role);
+            useless = false;
+        }
+
+        return useless;
+    }
+
+    private static void assignRoleFromSuperRoleToPlayer(Player player) {
+        Set<Role> roles = player.getRoles();
+
+        roles.forEach(r -> {
+            removeRoleToPlayer(player, r);
+            assignRoleToPlayer(player, RoleUtil.getRoleFromSuperRole(r));
+        });
+    }
+
+    private static boolean removeRoleToPlayer(Player player, Role... roles) {
+        boolean remove = false;
+
+        for (Role role : roles) {
+            if (player.hasRole(role)) {
+                System.out.println(player.getName() + " n'est plus " + role);
+                player.removeRole(role);
+                remove = true;
+            }
+        }
+
+        return remove;
     }
 
     public static void play(Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players) {
@@ -136,6 +204,8 @@ public class PlayerDecider {
         DiceUtil.display(dice1, dice2, specialDice);
 
         Role newRole = RoleDecider.decideRole(dice1, dice2, specialDice);
+
+        System.out.println("Role : " + newRole);
 
         assignRoleToPlayer(newRole, player, dice1, dice2, specialDice, players);
     }

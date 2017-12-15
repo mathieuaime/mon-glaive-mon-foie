@@ -7,7 +7,9 @@ import com.mgmf.monglaivemonfoie.model.Player;
 import java.util.Arrays;
 
 /**
- * Created by Mathieu on 07/12/2017.
+ * Event for the drink.
+ *
+ * @author Mathieu Aimé
  */
 
 public abstract class DrinkEvent extends Event {

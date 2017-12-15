@@ -10,7 +10,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Utility class for the players.
+ *
+ * @author Mathieu Aimé
  */
 
 public class PlayerUtil {

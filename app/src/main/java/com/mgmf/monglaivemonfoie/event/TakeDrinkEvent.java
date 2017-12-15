@@ -1,7 +1,9 @@
 package com.mgmf.monglaivemonfoie.event;
 
 /**
- * Created by Mathieu on 07/12/2017.
+ * Event for the drink taken.
+ *
+ * @author Mathieu Aimé
  */
 
 public class TakeDrinkEvent extends DrinkEvent {

@@ -4,10 +4,13 @@ import com.mgmf.monglaivemonfoie.model.Role;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * Util class for the roles.
+ * Utility class for the roles.
+ *
  * @author Mathieu Aimé
  */
 
@@ -88,5 +91,9 @@ public class RoleUtil {
 
     public static Map<Integer, Role> getRoles() {
         return roles;
+    }
+
+    public static List<Role> getSuperRoles() {
+        return roles.entrySet().stream().filter(e -> e.getKey() > 100).map(Map.Entry::getValue).collect(Collectors.toList());
     }
 }

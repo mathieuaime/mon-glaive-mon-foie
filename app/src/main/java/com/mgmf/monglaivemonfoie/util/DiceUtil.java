@@ -7,7 +7,8 @@ import com.mgmf.monglaivemonfoie.model.Dice;
 import java.util.Arrays;
 
 /**
- * Util class for the dices.
+ * Utility class for the dices.
+ *
  * @author Mathieu Aimé
  */
 

@@ -1,7 +1,9 @@
 package com.mgmf.monglaivemonfoie.exception;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Bad Dice Exception.
+ *
+ * @author Mathieu Aimé
  */
 
 public class BadDiceException extends RuntimeException {

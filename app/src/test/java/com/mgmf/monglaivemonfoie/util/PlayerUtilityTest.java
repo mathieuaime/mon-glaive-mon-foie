@@ -15,13 +15,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by ranaivoson on 13/12/17.
+ * Unit Tests for the Player Utility.
+ *
+ * @author Mathieu Aimé
  */
-public class PlayerUtilTest {
-    @Test
-    public void assignRoleToPlayer() throws Exception {
-    }
-
+public class PlayerUtilityTest {
     @Test
     public void getPlayerByRole() throws Exception {
         Set<Player> playerSet = new HashSet<>();

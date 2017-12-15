@@ -6,7 +6,9 @@ import com.mgmf.monglaivemonfoie.util.RoleUtil;
 import com.mgmf.monglaivemonfoie.validator.DiceValidator;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Contains the logic for the roles.
+ *
+ * @author Mathieu Aimé
  */
 
 public class RoleDecider {

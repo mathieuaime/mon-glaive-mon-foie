@@ -1,6 +1,7 @@
 package com.mgmf.monglaivemonfoie.model;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +14,8 @@ import java.util.Set;
 public class Player {
 
     private static int numberOfPlayers = 1;
-    private long id;
     private final String name;
+    private long id;
     private Set<Role> roles = new HashSet<>();
 
     public Player(String name) {
@@ -30,16 +31,24 @@ public class Player {
         return name;
     }
 
+    public boolean hasRole(Collection<Role> roles) {
+        return hasRole(roles.toArray(new Role[roles.size()]));
+    }
+
     public boolean hasRole(Role... roles) {
         return Arrays.stream(roles).anyMatch(this.roles::contains);
+    }
+
+    public Set<Role> getRoles() {
+        return new HashSet<>(roles);
     }
 
     public boolean addRole(Role role) {
         return roles.add(role);
     }
 
-    public boolean removeRole(Role... roles) {
-        return this.roles.removeAll(Arrays.asList(roles));
+    public boolean removeRole(Role role) {
+        return this.roles.remove(role);
     }
 
     public void removeAllRoles() {
@@ -68,5 +77,9 @@ public class Player {
                 ", name='" + name + '\'' +
                 ", roles=" + roles +
                 '}';
+    }
+
+    public void removeRole(Role... roles) {
+        Arrays.stream(roles).forEach(this::removeRole);
     }
 }
