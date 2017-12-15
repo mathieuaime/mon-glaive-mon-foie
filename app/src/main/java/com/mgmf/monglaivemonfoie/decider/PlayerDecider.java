@@ -40,11 +40,14 @@ public class PlayerDecider {
         //if the dices have almost one 3
         if (numberOfThree > 0) {
             if (!role.equals(Role.Prisonnier)) {
-                PlayerUtil.getPlayerByRole(Role.Prisonnier, players).ifPresent(p -> new TakeDrinkEvent(numberOfThree).play(p));
                 if (player.hasRole(Role.Prisonnier)) {
                     if (removeRoleToPlayer(player, Role.Prisonnier) && !role.equals(Role.Attaque)) {
+                        System.out.println(player.getName() + " sort de prison ! Pour fêter ça, il boit le spécial !");
+                        new TakeDrinkEvent(specialDice.getValue()).play(player);
                         return;
                     }
+                } else {
+                    PlayerUtil.getPlayerByRole(Role.Prisonnier, players).ifPresent(p -> new TakeDrinkEvent(numberOfThree).play(p));
                 }
             }
         }
@@ -54,15 +57,21 @@ public class PlayerDecider {
                 if (player.hasRole(Role.Prisonnier, Role.Dieu)) {
                     new UselessDrinkEvent(specialDice.getValue()).play(player);
                 } else {
-                    removeRoleToPlayer(player, Role.Princesse, Role.Ecuyer);
                     if (assignRoleToPlayer(player, role, players)) {
                         new UselessDrinkEvent(specialDice.getValue()).play(player);
+                    } else {
+                        removeRoleToPlayer(player, Role.Princesse);
+                        PlayerUtil.getPlayerByRole(Role.Ecuyer, players).ifPresent(p -> removeRoleToPlayer(p, Role.Ecuyer));
                     }
                 }
                 break;
             case Princesse:
+                if (player.hasRole(Role.Prisonnier, Role.Heros) || assignRoleToPlayer(player, role, players)) {
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
+                }
+                break;
             case Ecuyer:
-                if (player.hasRole(Role.Prisonnier, Role.Heros, Role.Dieu) || assignRoleToPlayer(player, role, players)) {
+                if (player.hasRole(Role.Prisonnier, Role.Heros, Role.Dieu) || !PlayerUtil.getPlayerByRole(Role.Heros, players).isPresent() || assignRoleToPlayer(player, role, players)) {
                     new UselessDrinkEvent(specialDice.getValue()).play(player);
                 }
                 break;
@@ -72,6 +81,12 @@ public class PlayerDecider {
                 }
                 break;
             case Dragon:
+                if (player.hasRole(Role.Prisonnier) || assignRoleToPlayer(player, role, players)) {
+                    new UselessDrinkEvent(specialDice.getValue()).play(player);
+                } else {
+                    new GiveDrinkEvent(d2).play(player);
+                }
+                break;
             case Oracle:
             case Aubergiste:
                 if (player.hasRole(Role.Prisonnier) || assignRoleToPlayer(player, role, players)) {
@@ -82,11 +97,13 @@ public class PlayerDecider {
                 if (!PlayerUtil.isRole(role, players)) {
                     player.removeAllRoles();
                     player.addRole(role);
-                    System.out.println(player.getName() + " devient " + role);
+                    System.out.println(player.getName() + " devient " + role + ", pour fêter ça, il boit le spécial !");
+                    new TakeDrinkEvent(specialDice.getValue()).play(player);
                 } else if (player.hasRole(role)) {
-                    System.out.println(player.getName() + ", tu restes Prisonnier, tu bois, double, bizzut");
-                    new TakeDrinkEvent(1).play(player);
-                    new TakeDrinkEvent(1).play(player);
+                    System.out.println(player.getName() + " sort de prison ! Pour fêter ça, il boit le spécial !");
+                    System.out.println(player.getName() + " rentre en prison ! Pour fêter ça, il boit le spécial !");
+                    System.out.println("Bizzut");
+                    new TakeDrinkEvent(2 * specialDice.getValue()).play(player);
                 }
                 break;
             case Demon:
@@ -112,6 +129,7 @@ public class PlayerDecider {
                         }
                     } else {
                         becomeGod(player, players);
+                        new GiveDrinkEvent(d2).play(player);
                     }
                 }
                 break;
@@ -131,7 +149,7 @@ public class PlayerDecider {
     public static void becomeGod(Player player, Collection<Player> players) {
         boolean becomeGod = assignRoleToPlayer(player, Role.Dieu, players);
         if (!becomeGod) {
-            removeRoleToPlayer(player, Role.Catin, Role.Heros, Role.Ecuyer, Role.Princesse);
+            removeRoleToPlayer(player, Role.Catin, Role.Heros, Role.Ecuyer);
         }
     }
 
@@ -166,7 +184,6 @@ public class PlayerDecider {
 
         if (!useless) {
             assignRoleToPlayer(player, RoleUtil.getRoleFromSuperRole(role), players);
-            player.removeAllRoles();
             player.addRole(role);
             System.out.println(player.getName() + " devient " + role);
             useless = false;
@@ -178,9 +195,11 @@ public class PlayerDecider {
     private static void assignRoleFromSuperRoleToPlayer(Player player) {
         Set<Role> roles = player.getRoles();
 
-        roles.forEach(r -> {
+        roles.stream().filter(RoleUtil::isSuperRole).forEach(r -> {
             removeRoleToPlayer(player, r);
-            assignRoleToPlayer(player, RoleUtil.getRoleFromSuperRole(r));
+            if (r.equals(Role.Demon)) {
+                new GiveDrinkEvent(6).play(player);
+            }
         });
     }
 

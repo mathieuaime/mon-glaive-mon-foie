@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.model.Role;
+import com.mgmf.monglaivemonfoie.util.DiceUtil;
 import com.mgmf.monglaivemonfoie.util.PlayerUtil;
 
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class AttackEvent extends Event {
 
         Optional<Player> oracle = PlayerUtil.getPlayerByRole(Role.Oracle, playerSet);
 
-        System.out.println("Dieu attaque le village pour " + nb + " gorgée" + (nb > 1 ? "s" : ""));
+        System.out.println("Dieu attaque le village pour " + DiceUtil.displayGorgees(nb));
 
         if (dieu.isPresent()) {
 

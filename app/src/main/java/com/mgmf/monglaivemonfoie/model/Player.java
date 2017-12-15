@@ -82,4 +82,12 @@ public class Player {
     public void removeRole(Role... roles) {
         Arrays.stream(roles).forEach(this::removeRole);
     }
+
+    public void removeAllRolesExcept(Role... roles) {
+        removeAllRolesExcept(Arrays.asList(roles));
+    }
+
+    public void removeAllRolesExcept(Collection<Role> roles) {
+        this.roles.removeIf(r -> !roles.contains(r));
+    }
 }

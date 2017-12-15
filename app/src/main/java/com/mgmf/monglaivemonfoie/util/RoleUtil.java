@@ -96,4 +96,8 @@ public class RoleUtil {
     public static List<Role> getSuperRoles() {
         return roles.entrySet().stream().filter(e -> e.getKey() > 100).map(Map.Entry::getValue).collect(Collectors.toList());
     }
+
+    public static boolean isSuperRole(Role role) {
+        return getSuperRoles().contains(role);
+    }
 }

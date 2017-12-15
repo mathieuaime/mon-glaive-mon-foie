@@ -27,4 +27,8 @@ public class DiceUtil {
     public static int numberOf(int value, Dice... dices) {
         return (int) Arrays.stream(dices).filter(x -> x.getValue() == value).count();
     }
+
+    public static String displayGorgees(int value) {
+        return value + " gorgée" + (value > 1 ? "s" : "");
+    }
 }
