@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Model class for a player
@@ -32,11 +33,15 @@ public class Player {
     }
 
     public boolean hasRole(Collection<Role> roles) {
-        return hasRole(roles.toArray(new Role[roles.size()]));
+        return hasRole(roles.stream());
     }
 
     public boolean hasRole(Role... roles) {
-        return Arrays.stream(roles).anyMatch(this.roles::contains);
+        return hasRole(Arrays.stream(roles));
+    }
+
+    private boolean hasRole(Stream<Role> roleStream) {
+        return roleStream.anyMatch(this.roles::contains);
     }
 
     public Set<Role> getRoles() {
@@ -77,17 +82,5 @@ public class Player {
                 ", name='" + name + '\'' +
                 ", roles=" + roles +
                 '}';
-    }
-
-    public void removeRole(Role... roles) {
-        Arrays.stream(roles).forEach(this::removeRole);
-    }
-
-    public void removeAllRolesExcept(Role... roles) {
-        removeAllRolesExcept(Arrays.asList(roles));
-    }
-
-    public void removeAllRolesExcept(Collection<Role> roles) {
-        this.roles.removeIf(r -> !roles.contains(r));
     }
 }

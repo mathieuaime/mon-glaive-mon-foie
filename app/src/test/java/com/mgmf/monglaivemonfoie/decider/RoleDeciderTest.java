@@ -77,7 +77,7 @@ public class RoleDeciderTest {
                 when(dice2.getValue()).thenReturn(j);
                 when(specialDice.getValue()).thenReturn(i == 1 ? 2 : 1);
 
-                assertEquals(RoleDecider.decideRole(dice1, dice2, specialDice), roles.get(10 * i + j));
+                assertEquals(roles.get(10 * i + j), RoleDecider.decideRole(dice1, dice2, specialDice));
             }
         }
     }

@@ -32,7 +32,7 @@ public class PlayerDecider {
 
 
         //reassign role if super role
-        if (player.hasRole(RoleUtil.getSuperRoles())) {
+        if (player.hasRole(RoleUtil.getSuperRoles().values())) {
             assignRoleFromSuperRoleToPlayer(player);
         }
 
@@ -218,14 +218,7 @@ public class PlayerDecider {
     }
 
     public static void play(Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players) {
-        DiceUtil.roll(dice1, dice2, specialDice);
-
-        DiceUtil.display(dice1, dice2, specialDice);
-
         Role newRole = RoleDecider.decideRole(dice1, dice2, specialDice);
-
-        System.out.println("Role : " + newRole);
-
         assignRoleToPlayer(newRole, player, dice1, dice2, specialDice, players);
     }
 }

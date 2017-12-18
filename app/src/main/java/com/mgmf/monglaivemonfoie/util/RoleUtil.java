@@ -4,9 +4,7 @@ import com.mgmf.monglaivemonfoie.model.Role;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Utility class for the roles.
@@ -17,6 +15,7 @@ import java.util.stream.Collectors;
 public class RoleUtil {
 
     private static final Map<Integer, Role> roles;
+    private static final Map<Integer, Role> superRoles;
 
     static {
         Map<Integer, Role> r = new HashMap<>();
@@ -49,6 +48,16 @@ public class RoleUtil {
         r.put(666, Role.Demon);
 
         roles = Collections.unmodifiableMap(r);
+
+        r = new HashMap<>();
+        r.put(111, Role.Clochard);
+        r.put(222, Role.Devin);
+        r.put(333, Role.Apprenti);
+        r.put(444, Role.Gourgandine);
+        r.put(555, Role.Imperatrice);
+        r.put(666, Role.Demon);
+
+        superRoles = Collections.unmodifiableMap(r);
     }
 
     public static Role getRoleFromSuperRole(Role role) {
@@ -93,11 +102,11 @@ public class RoleUtil {
         return roles;
     }
 
-    public static List<Role> getSuperRoles() {
-        return roles.entrySet().stream().filter(e -> e.getKey() > 100).map(Map.Entry::getValue).collect(Collectors.toList());
+    public static Map<Integer, Role> getSuperRoles() {
+        return superRoles;
     }
 
     public static boolean isSuperRole(Role role) {
-        return getSuperRoles().contains(role);
+        return getSuperRoles().values().contains(role);
     }
 }
