@@ -2,6 +2,8 @@ package com.mgmf.monglaivemonfoie.event;
 
 import com.mgmf.monglaivemonfoie.model.Player;
 
+import java.util.List;
+
 /**
  * Abstract Event.
  *
@@ -10,6 +12,7 @@ import com.mgmf.monglaivemonfoie.model.Player;
 
 public abstract class Event {
     protected int nb;
+    protected List<Player> players;
 
-    public abstract void play(Player... playerSet);
+    public abstract String play();
 }

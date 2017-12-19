@@ -1,4 +1,7 @@
-package com.mgmf.monglaivemonfoie.event;
+package com.mgmf.monglaivemonfoie.event.drink;
+
+import com.mgmf.monglaivemonfoie.event.DrinkEvent;
+import com.mgmf.monglaivemonfoie.model.Player;
 
 /**
  * Event for when you are fucking useless, so you drink.
@@ -7,8 +10,8 @@ package com.mgmf.monglaivemonfoie.event;
  */
 
 public class UselessDrinkEvent extends DrinkEvent {
-    public UselessDrinkEvent(int nb) {
-        this.nb = nb;
+    public UselessDrinkEvent(int nb, Player... player) {
+        super(nb, player);
     }
 
     @Override

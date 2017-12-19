@@ -20,10 +20,6 @@ public class DiceUtil {
         Arrays.stream(dices).forEach(d -> d.roll(FACES));
     }
 
-    public static void display(Dice... dices) {
-        System.out.println("Dés : " + Arrays.toString(dices));
-    }
-
     public static int numberOf(int value, Dice... dices) {
         return (int) Arrays.stream(dices).filter(x -> x.getValue() == value).count();
     }
