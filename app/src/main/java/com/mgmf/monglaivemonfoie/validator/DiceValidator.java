@@ -16,7 +16,9 @@ public class DiceValidator {
 
     @SuppressLint("NewApi")
     public static void validate(Dice... dices) {
-        Arrays.stream(dices).forEach(DiceValidator::validate);
+        for (Dice dice : dices) {
+            validate(dice);
+        }
     }
 
     private static void validate(Dice dice) {

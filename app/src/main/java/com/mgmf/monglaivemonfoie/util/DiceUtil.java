@@ -1,10 +1,6 @@
 package com.mgmf.monglaivemonfoie.util;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.model.Dice;
-
-import java.util.Arrays;
 
 /**
  * Utility class for the dices.
@@ -12,16 +8,23 @@ import java.util.Arrays;
  * @author Mathieu Aimé
  */
 
-@SuppressLint("NewApi")
 public class DiceUtil {
     public static final int FACES = 6;
 
     public static void roll(Dice... dices) {
-        Arrays.stream(dices).forEach(d -> d.roll(FACES));
+        for (Dice d : dices) {
+            d.roll(FACES);
+        }
     }
 
     public static int numberOf(int value, Dice... dices) {
-        return (int) Arrays.stream(dices).filter(x -> x.getValue() == value).count();
+        int count = 0;
+        for (Dice x : dices) {
+            if (x.getValue() == value) {
+                ++count;
+            }
+        }
+        return count;
     }
 
     public static String displayGorgees(int value) {
