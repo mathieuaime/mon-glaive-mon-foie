@@ -9,7 +9,9 @@ import com.mgmf.monglaivemonfoie.util.DiceUtil;
 import java.util.Arrays;
 
 /**
- * Created by Mathieu on 06/12/2017.
+ * Validate a dice.
+ *
+ * @author Mathieu Aimé
  */
 
 public class DiceValidator {
