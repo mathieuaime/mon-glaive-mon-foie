@@ -1,4 +1,4 @@
-package com.mgmf.monglaivemonfoie.ui;
+package com.mgmf.monglaivemonfoie.ui.surface;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -10,13 +10,14 @@ import com.mgmf.monglaivemonfoie.model.Game;
 import com.mgmf.monglaivemonfoie.ui.renderer.MyGLRenderer;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
- * Created by ranaivoson on 20/12/17.
+ * Custom surface view.
+ *
+ * @author Mathieu Aimé
  */
 
-class MyGLSurfaceView extends GLSurfaceView {
+public class MyGLSurfaceView extends GLSurfaceView {
 
     private final MyGLRenderer mRenderer;
     private final Game game;

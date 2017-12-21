@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ranaivoson on 20/12/17.
+ * Model for a game.
+ *
+ * @author Mathieu Aimé
  */
 
 public class Game {
