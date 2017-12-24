@@ -3,7 +3,6 @@ package com.mgmf.monglaivemonfoie.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.mgmf.monglaivemonfoie.R;
 
@@ -19,7 +18,7 @@ public class SplashActivity extends Activity {
             public void run() {
                 try {
                     super.run();
-                    sleep(4000);
+                    sleep(2000);
                 } catch (Exception ignored) {
                 } finally {
                     Intent i = new Intent(SplashActivity.this, MainActivity.class);

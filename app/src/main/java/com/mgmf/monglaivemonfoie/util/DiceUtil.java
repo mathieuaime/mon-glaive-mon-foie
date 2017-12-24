@@ -1,6 +1,10 @@
 package com.mgmf.monglaivemonfoie.util;
 
+import android.annotation.SuppressLint;
+
 import com.mgmf.monglaivemonfoie.model.Dice;
+
+import java.util.StringJoiner;
 
 /**
  * Utility class for the dices.
@@ -29,5 +33,14 @@ public class DiceUtil {
 
     public static String displayGorgees(int value) {
         return value + " gorgée" + (value > 1 ? "s" : "");
+    }
+
+    @SuppressLint("NewApi")
+    public static String displayDices(Dice[] dices) {
+        StringJoiner joiner = new StringJoiner(" ");
+        for (Dice d : dices) {
+            joiner.add(String.valueOf(d.getValue()));
+        }
+        return joiner.toString();
     }
 }

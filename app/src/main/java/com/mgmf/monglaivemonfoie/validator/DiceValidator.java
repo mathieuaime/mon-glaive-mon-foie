@@ -6,8 +6,6 @@ import com.mgmf.monglaivemonfoie.exception.BadDiceException;
 import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
 
-import java.util.Arrays;
-
 /**
  * Validate a dice.
  *

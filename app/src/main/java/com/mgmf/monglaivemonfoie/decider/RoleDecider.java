@@ -22,4 +22,11 @@ public class RoleDecider {
 
         return RoleUtil.getRoles().get(index);
     }
+
+    public static Role decideRole(Dice[] dices) {
+        if (dices.length < 3) {
+            throw new IllegalArgumentException("Three dices are required to decided a role");
+        }
+        return decideRole(dices[0], dices[1], dices[2]);
+    }
 }

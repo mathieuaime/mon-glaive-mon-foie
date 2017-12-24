@@ -44,4 +44,8 @@ public class Game {
     public Dice[] getDices() {
         return new Dice[]{dice1, dice2, specialDice};
     }
+
+    public Player getActualPlayer() {
+        return players.get(actualPlayer);
+    }
 }
