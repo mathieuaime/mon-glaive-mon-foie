@@ -1,7 +1,5 @@
 package com.mgmf.monglaivemonfoie.decider;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.event.action.AttackEvent;
 import com.mgmf.monglaivemonfoie.event.action.GodBattleEvent;
@@ -24,8 +22,6 @@ import com.mgmf.monglaivemonfoie.util.RoleUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Contains the logic for the players.
@@ -33,7 +29,6 @@ import java.util.Set;
  * @author Mathieu Aimé
  */
 
-@SuppressLint("NewApi")
 public class PlayerDecider {
     private static List<Event> assignRoleToPlayer(Role role, Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players) {
 
@@ -57,7 +52,10 @@ public class PlayerDecider {
                         return events;
                     }
                 } else {
-                    PlayerUtil.getPlayerByRole(Role.Prisonnier, players).ifPresent(p -> events.add(new TakeDrinkEvent(numberOfThree, p)));
+                    Player prisonier = PlayerUtil.getPlayerByRole(Role.Prisonnier, players);
+                    if (prisonier != null) {
+                        events.add(new TakeDrinkEvent(numberOfThree, prisonier));
+                    }
                 }
             }
         }
@@ -74,7 +72,10 @@ public class PlayerDecider {
                         events.add(uselessDrinkEvent);
                     } else {
                         removeRoleToPlayer(events, player, Role.Princesse);
-                        PlayerUtil.getPlayerByRole(Role.Ecuyer, players).ifPresent(p -> removeRoleToPlayer(events, p, Role.Ecuyer));
+                        Player ecuyer = PlayerUtil.getPlayerByRole(Role.Ecuyer, players);
+                        if (ecuyer != null) {
+                            removeRoleToPlayer(events, ecuyer, Role.Ecuyer);
+                        }
                     }
                 }
                 break;
@@ -84,7 +85,7 @@ public class PlayerDecider {
                 }
                 break;
             case Ecuyer:
-                if (player.hasRole(Role.Prisonnier, Role.Heros, Role.Dieu) || !PlayerUtil.getPlayerByRole(Role.Heros, players).isPresent() || assignRoleToPlayer(events, assignment, players)) {
+                if (player.hasRole(Role.Prisonnier, Role.Heros, Role.Dieu) || PlayerUtil.getPlayerByRole(Role.Heros, players) == null || assignRoleToPlayer(events, assignment, players)) {
                     events.add(uselessDrinkEvent);
                 }
                 break;
@@ -127,9 +128,15 @@ public class PlayerDecider {
                     events.add(uselessDrinkEvent);
                 } else {
                     if (d1 != 6) {
-                        Optional<Player> oldGod = players.stream().filter(p -> p.hasRole(role)).findFirst();
-                        if (oldGod.isPresent()) {
-                            events.add(new GodBattleEvent(d2, oldGod.get(), player));
+                        Player oldGod = null;
+                        for (Player p : players) {
+                            if (p.hasRole(role)) {
+                                oldGod = p;
+                                break;
+                            }
+                        }
+                        if (oldGod != null) {
+                            events.add(new GodBattleEvent(specialDice.getValue(), oldGod, player));
                         } else {
                             becomeGod(events, player, players);
                         }
@@ -209,14 +216,14 @@ public class PlayerDecider {
     }
 
     private static void assignRoleFromSuperRoleToPlayer(List<Event> events, Player player) {
-        Set<Role> roles = player.getRoles();
-
-        roles.stream().filter(RoleUtil::isSuperRole).forEach(r -> {
-            removeRoleToPlayer(events, player, r);
-            if (r.equals(Role.Demon)) {
-                events.add(new GiveDrinkEvent(6, player));
+        for (Role r : player.getRoles()) {
+            if (RoleUtil.isSuperRole(r)) {
+                removeRoleToPlayer(events, player, r);
+                if (r.equals(Role.Demon)) {
+                    events.add(new GiveDrinkEvent(6, player));
+                }
             }
-        });
+        }
     }
 
     private static boolean removeRoleToPlayer(List<Event> events, Player player, Role... roles) {

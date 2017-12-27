@@ -48,4 +48,8 @@ public class Game {
     public Player getActualPlayer() {
         return players.get(actualPlayer);
     }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
 }

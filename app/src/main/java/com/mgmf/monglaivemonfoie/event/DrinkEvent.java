@@ -1,12 +1,9 @@
 package com.mgmf.monglaivemonfoie.event;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * Event for the drinks.
@@ -21,10 +18,21 @@ public abstract class DrinkEvent extends Event {
         this.players = Arrays.asList(player);
     }
 
-    @SuppressLint("NewApi")
     @Override
     public String play() {
-        return players.stream().map(p -> p.getName() + " " + getAction() + " " + DiceUtil.displayGorgees(nb)).collect(Collectors.joining("\n"));
+        StringBuilder builder = new StringBuilder();
+        for (Player p : players) {
+            if (!builder.toString().equals("")) {
+                builder.append('\n');
+            }
+
+            builder.append(p.getName())
+                    .append(" ")
+                    .append(getAction())
+                    .append(" ")
+                    .append(DiceUtil.displayGorgees(nb));
+        }
+        return builder.toString();
     }
 
     public abstract String getAction();

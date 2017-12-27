@@ -14,7 +14,6 @@ import com.mgmf.monglaivemonfoie.util.DiceUtil;
 
 public class DiceValidator {
 
-    @SuppressLint("NewApi")
     public static void validate(Dice... dices) {
         for (Dice dice : dices) {
             validate(dice);

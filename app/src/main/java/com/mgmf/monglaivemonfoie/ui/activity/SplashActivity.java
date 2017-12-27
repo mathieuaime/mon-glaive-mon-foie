@@ -1,4 +1,4 @@
-package com.mgmf.monglaivemonfoie.ui;
+package com.mgmf.monglaivemonfoie.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;

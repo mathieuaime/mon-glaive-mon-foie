@@ -1,12 +1,9 @@
 package com.mgmf.monglaivemonfoie.event;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.model.Assignment;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Event for the assigments.
@@ -24,11 +21,20 @@ public abstract class AssignEvent extends Event {
 
     protected abstract String getAction();
 
-    @SuppressLint("NewApi")
     @Override
     public String play() {
-        return assignments.stream().map(a -> a.getPlayer().getName() + " " + getAction() + " " + a.getRole()).collect(Collectors.joining("\n"));
+        StringBuilder builder = new StringBuilder();
+        for (Assignment a : assignments) {
+            if (!builder.toString().equals("")) {
+                builder.append('\n');
+            }
+
+            builder.append(a.getPlayer().getName())
+                    .append(" ")
+                    .append(getAction())
+                    .append(" ")
+                    .append(a.getRole());
+        }
+        return builder.toString();
     }
-
-
 }

@@ -1,14 +1,10 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.model.Role;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
 import com.mgmf.monglaivemonfoie.util.PlayerUtil;
-
-import java.util.Optional;
 
 /**
  * Event for the attack.
@@ -22,37 +18,64 @@ public class AttackEvent extends ActionEvent {
         super(nb, player);
     }
 
-    @SuppressLint("NewApi")
     @Override
     public String play() {
         StringBuilder builder = new StringBuilder();
 
-        Optional<Player> dieu = PlayerUtil.getPlayerByRole(Role.Dieu, players);
+        Player dieu = PlayerUtil.getPlayerByRole(Role.Dieu, players);
+        Player catin = PlayerUtil.getPlayerByRole(Role.Catin, players);
+        Player heros = PlayerUtil.getPlayerByRole(Role.Heros, players);
+        Player oracle = PlayerUtil.getPlayerByRole(Role.Oracle, players);
 
-        Optional<Player> catin = PlayerUtil.getPlayerByRole(Role.Catin, players);
+        builder.append("Dieu attaque le village pour ")
+                .append(DiceUtil.displayGorgees(nb));
 
-        Optional<Player> heros = PlayerUtil.getPlayerByRole(Role.Heros, players);
+        if (dieu != null) {
 
-        Optional<Player> oracle = PlayerUtil.getPlayerByRole(Role.Oracle, players);
+            if (catin != null) {
+                addMessage(builder, "La catin s'interpose !");
+                int catinDice = DiceUtil.random();
+                addMessage(builder, "La catin fait " + catinDice);
+                if (catinDice == 1) {
+                    addMessage(builder, "DIEU EST VAINCU !!!!" + dieu.getName() + " boit " + DiceUtil.displayGorgees(nb) + " !");
+                    return builder.toString();
+                } else {
+                    addMessage(builder, "La catin échoue lamentablement ... " + catin.getName() + " boit " + DiceUtil.displayGorgees(catinDice));
+                }
+            }
 
-        builder.append("Dieu attaque le village pour ").append(DiceUtil.displayGorgees(nb)).append('\n');
-
-        if (dieu.isPresent()) {
-
-            builder.append(catin.isPresent() ? "La catin s'interpose !" : "Il n'y a pas de catin ...").append('\n');
-
-            if (heros.isPresent()) {
-                builder.append("Le héros s'interpose !").append('\n');
-                if (oracle.isPresent()) {
-                    builder.append("L'oracle prédit le coup du héros").append('\n');
+            if (heros != null) {
+                addMessage(builder, "Le héros s'interpose !");
+                if (oracle != null) {
+                    addMessage(builder, "L'oracle prédit le coup du héros");
+                }
+                int herosDice = DiceUtil.random();
+                addMessage(builder, "Le héros fait " + herosDice);
+                if (herosDice == 1) {
+                    addMessage(builder, "LE HEROS EST FOUDROYE !!!! " + heros.getName() + " SEC !!!! " + "\n" + dieu.getName() + "donne" + DiceUtil.displayGorgees(nb) + " !");
+                    heros.removeRole(Role.Heros);
+                } else if (herosDice == 6) {
+                    addMessage(builder, "DIEU EST VAINCU !!!! " + dieu.getName() + " boit " + DiceUtil.displayGorgees(nb) + " !");
+                    return builder.toString();
+                } else if (herosDice > 3) {
+                    addMessage(builder, "Le héros se sacrifie pour le village" + "\n" + heros.getName() + " boit " + DiceUtil.displayGorgees(nb));
+                } else {
+                    addMessage(builder, "Le héros échoue à sauver le village" + "\n" + heros.getName() + " boit " + DiceUtil.displayGorgees(herosDice) + " et " + dieu.getName() + " donne " + DiceUtil.displayGorgees(nb));
                 }
             } else {
-                builder.append("Il n'y a pas de héros ...").append('\n');
+                addMessage(builder, "Il n'y a pas de héros, " + dieu.getName() + " donne " + DiceUtil.displayGorgees(nb));
             }
         } else {
-            builder.append("Il n'y a pas de dieu ...").append('\n');
+            addMessage(builder, "Il n'y a pas de dieu ...");
         }
 
         return builder.toString();
+    }
+
+    private void addMessage(StringBuilder builder, String message) {
+        if (!builder.toString().equals("")) {
+            builder.append('\n');
+        }
+        builder.append(message);
     }
 }

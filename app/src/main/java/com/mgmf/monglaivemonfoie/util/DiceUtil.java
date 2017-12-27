@@ -1,10 +1,8 @@
 package com.mgmf.monglaivemonfoie.util;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.model.Dice;
 
-import java.util.StringJoiner;
+import java.util.Random;
 
 /**
  * Utility class for the dices.
@@ -35,12 +33,16 @@ public class DiceUtil {
         return value + " gorgée" + (value > 1 ? "s" : "");
     }
 
-    @SuppressLint("NewApi")
     public static String displayDices(Dice[] dices) {
-        StringJoiner joiner = new StringJoiner(" ");
+        StringBuilder builder = new StringBuilder();
         for (Dice d : dices) {
-            joiner.add(String.valueOf(d.getValue()));
+            builder.append(String.valueOf(d.getValue())).append(" ");
         }
-        return joiner.toString();
+        return builder.toString();
+    }
+
+    public static int random() {
+        Random r = new Random();
+        return r.nextInt(FACES) + 1;
     }
 }

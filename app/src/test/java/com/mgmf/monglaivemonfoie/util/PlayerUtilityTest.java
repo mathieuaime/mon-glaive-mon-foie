@@ -6,7 +6,6 @@ import com.mgmf.monglaivemonfoie.model.Role;
 import org.junit.Test;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -31,10 +30,10 @@ public class PlayerUtilityTest {
 
         for (Role role : RoleUtil.getRoles().values()) {
             when(player1.hasRole(role)).thenReturn(true);
-            Optional<Player> playerByRole = PlayerUtil.getPlayerByRole(role, playerSet);
+            Player playerByRole = PlayerUtil.getPlayerByRole(role, playerSet);
 
-            if (playerByRole.isPresent()) {
-                assertEquals(player1, playerByRole.get());
+            if (playerByRole != null) {
+                assertEquals(player1, playerByRole);
             } else {
                 fail("No player with role " + role);
             }

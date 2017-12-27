@@ -1,10 +1,9 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
 import com.mgmf.monglaivemonfoie.event.Event;
+import com.mgmf.monglaivemonfoie.event.drink.TakeDrinkEvent;
 import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
@@ -24,32 +23,44 @@ public class GodBattleEvent extends ActionEvent {
         super(nb, player);
     }
 
-    private static Player getWinner(Player oldGod, Player player) {
-        Dice oldGodDice = new Dice();
-        Dice playerDice = new Dice();
-
-        do {
-            DiceUtil.roll(oldGodDice, playerDice);
-        } while (oldGodDice.getValue() == playerDice.getValue());
-
-        return oldGodDice.getValue() > playerDice.getValue() ? oldGod : player;
-    }
-
-    @SuppressLint("NewApi")
     @Override
     public String play() {
         if (players.size() > 1) {
             StringBuilder builder = new StringBuilder();
             Player oldGod = players.get(0);
             Player player = players.get(1);
-            builder.append("Bataille de dieux entre ").append(oldGod.getName()).append(" et ").append(player.getName()).append('\n');
-            Player winner = getWinner(oldGod, player);
+            builder.append("Bataille de dieux entre ")
+                    .append(oldGod.getName())
+                    .append(" et ")
+                    .append(player.getName())
+                    .append('\n');
+
+            Dice oldGodDice = new Dice();
+            Dice playerDice = new Dice();
+            int nbGorgees = nb;
+
+            do {
+                DiceUtil.roll(oldGodDice, playerDice);
+                builder.append(oldGod.getName()).append(" fait ").append(oldGodDice.getValue()).append("\n");
+                builder.append(player.getName()).append(" fait ").append(playerDice.getValue()).append("\n");
+                if (oldGodDice.getValue() == playerDice.getValue()) {
+                    nbGorgees *= 2;
+                    builder.append("Egalité, on recommence pour ").append(DiceUtil.displayGorgees(nbGorgees)).append("\n");
+                }
+            } while (oldGodDice.getValue() == playerDice.getValue());
+
+            Player winner = oldGodDice.getValue() > playerDice.getValue() ? oldGod : player;
+            Player looser = oldGodDice.getValue() < playerDice.getValue() ? oldGod : player;
 
             builder.append(winner.getName()).append(" a gagné !").append('\n');
 
             List<Event> events = new ArrayList<>();
+            events.add(new TakeDrinkEvent(nbGorgees, looser));
             PlayerDecider.becomeGod(events, winner, players);
-            events.stream().map(e -> e.play() + '\n').forEach(builder::append);
+            for (Event e : events) {
+                builder.append(e.play())
+                        .append('\n');
+            }
 
             return builder.toString();
         } else {
