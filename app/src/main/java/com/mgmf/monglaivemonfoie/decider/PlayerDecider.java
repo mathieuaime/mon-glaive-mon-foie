@@ -150,7 +150,7 @@ public class PlayerDecider {
                 }
                 break;
             case Attaque:
-                events.add(new AttackEvent(specialDice.getValue(), players.toArray(new Player[players.size()])));
+                events.add(new AttackEvent(d1, players.toArray(new Player[players.size()])));
                 break;
             case AllDrink:
                 events.add(new GeneralDrinkEvent(d1 * 10 + d2, specialDice.getValue()));
