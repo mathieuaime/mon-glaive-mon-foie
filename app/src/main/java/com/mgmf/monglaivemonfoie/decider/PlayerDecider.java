@@ -36,7 +36,6 @@ public class PlayerDecider {
         int d1 = Math.max(dice1.getValue(), dice2.getValue());
         int d2 = Math.min(dice1.getValue(), dice2.getValue());
 
-
         //reassign role if super role
         if (player.hasRole(RoleUtil.getSuperRoles().values())) {
             assignRoleFromSuperRoleToPlayer(events, player);
@@ -95,7 +94,11 @@ public class PlayerDecider {
                 }
                 break;
             case Dragon:
-                events.add(player.hasRole(Role.Prisonnier) || assignRoleToPlayer(events, assignment, players) ? uselessDrinkEvent : new GiveDrinkEvent(d2, player));
+                if (player.hasRole(Role.Prisonnier) || assignRoleToPlayer(events, assignment, players)) {
+                    events.add(uselessDrinkEvent);
+                } else {
+                    events.add(new GiveDrinkEvent(d2, player));
+                }
                 break;
             case Oracle:
             case Aubergiste:
@@ -173,7 +176,9 @@ public class PlayerDecider {
 
         boolean useless = true;
 
-        if (!PlayerUtil.isRole(RoleUtil.getSuperRoleFromRole(role), players)) {
+        Role superRole = RoleUtil.getSuperRoleFromRole(role);
+
+        if (superRole == null || !PlayerUtil.isRole(superRole, players)) {
             for (Player p : players) {
                 if (p.getId() == player.getId()) {
                     useless = !assignRoleToPlayer(events, assignment);

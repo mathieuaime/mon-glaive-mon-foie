@@ -31,7 +31,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    private final Game game = new Game(5);
+    private Game game;
     private TextView playerTextView;
     private TextView roleTextView;
     private TextView diceTextView;
@@ -46,7 +46,6 @@ public class MainActivity extends Activity {
         updateDisplay();
         List<Event> events = game.play();
         displayEvents(events);
-        updatePlayersDisplay();
     };
 
     private final View.OnClickListener eventListener = v -> displayEventIterator();
@@ -54,6 +53,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        game = new Game(getIntent().getStringArrayListExtra("players"));
 
         setContentView(R.layout.activity_main);
 
@@ -85,13 +86,20 @@ public class MainActivity extends Activity {
         }
     }
 
-
     private void displayEvent(Event event) {
         String display = event.play();
         String[] displays = display.split("\n");
-        this.displayIterator = Arrays.asList(displays).iterator();
-        rlayout.setOnClickListener(eventListener);
-        displayEventIterator();
+        if (displays.length > 1) {
+            this.displayIterator = Arrays.asList(displays).iterator();
+            rlayout.setOnClickListener(eventListener);
+            displayEventIterator();
+        } else if (displays.length == 1) {
+            if (gameTextView.getText().length() > 0) {
+                gameTextView.append("\n");
+            }
+            gameTextView.append(displays[0]);
+            updatePlayersDisplay();
+        }
     }
 
     private void displayEventIterator() {
@@ -105,6 +113,7 @@ public class MainActivity extends Activity {
 
         if (!displayIterator.hasNext()) {
             rlayout.setOnClickListener(gameListener);
+            updatePlayersDisplay();
         }
     }
 

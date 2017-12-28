@@ -23,11 +23,10 @@ public class Game {
 
     private int actualPlayer = 0;
 
-    public Game(int NB_PLAYERS) {
-        this.NB_PLAYERS = NB_PLAYERS;
-
-        for (int i = 1; i <= NB_PLAYERS; i++) {
-            players.add(new Player("Player" + i));
+    public Game(List<String> players) {
+        this.NB_PLAYERS = players.size();
+        for (String player : players) {
+            this.players.add(new Player(player));
         }
     }
 

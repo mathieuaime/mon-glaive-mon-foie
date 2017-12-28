@@ -3,11 +3,12 @@
     <string name="diceDisplay">Dés : %1$s</string>
     <string name="roleDisplay">Role : %1$s</string>
     <string name="playersDisplay">Joueurs : %1$s</string>
-    <string name="play">Jouer</string>
     <string name="playerDisplay">Joueur %1$s</string>
     <string name="logo">Logo</string>
     <string name="mon_glaive_mon_foie">MON GLAIVE MON FOIE</string>
     <string name="catin_interpose">La catin s\'interpose</string>
     <string name="not_ready">Vous n\'êtes pas prêts</string>
     <string name="bonjour">BONJOUR !</string>
+    <string name="player">Player</string>
+    <string name="play">Jouer</string>
 </resources>

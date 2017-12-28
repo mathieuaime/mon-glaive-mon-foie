@@ -52,7 +52,7 @@ public class AttackEvent extends ActionEvent {
                 int herosDice = DiceUtil.random();
                 addMessage(builder, "Le héros fait " + herosDice);
                 if (herosDice == 1) {
-                    addMessage(builder, "LE HEROS EST FOUDROYE !!!! " + heros.getName() + " SEC !!!! " + "\n" + dieu.getName() + "donne" + DiceUtil.displayGorgees(nb) + " !");
+                    addMessage(builder, "LE HEROS EST FOUDROYE !!!! " + heros.getName() + " SEC !!!! " + "\n" + dieu.getName() + " donne " + DiceUtil.displayGorgees(nb) + " !");
                     heros.removeRole(Role.Heros);
                 } else if (herosDice == 6) {
                     addMessage(builder, "DIEU EST VAINCU !!!! " + dieu.getName() + " boit " + DiceUtil.displayGorgees(nb) + " !");

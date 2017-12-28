@@ -94,7 +94,7 @@ public class RoleUtil {
             case Heros:
                 return Role.Clochard;
             default:
-                return role;
+                return null;
         }
     }
 

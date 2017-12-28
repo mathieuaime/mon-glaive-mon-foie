@@ -32,7 +32,7 @@
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listPlayers"
+        android:id="@+id/list_players"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -55,5 +55,6 @@
         android:background="@drawable/rdisplay_informations"
         android:padding="5dp"
         android:gravity="center"
+        android:textSize="20sp"
         android:text="@string/bonjour" />
 </RelativeLayout>
