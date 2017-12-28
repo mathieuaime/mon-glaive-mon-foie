@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.mgmf.monglaivemonfoie.R;
 
@@ -46,9 +47,13 @@ public class PlayerSelectionActivity extends Activity {
                 }
             }
 
-            Intent intent = new Intent(PlayerSelectionActivity.this, MainActivity.class);
-            intent.putStringArrayListExtra("players", players);
-            startActivity(intent);
+            if (players.size() > 1) {
+                Intent intent = new Intent(PlayerSelectionActivity.this, MainActivity.class);
+                intent.putStringArrayListExtra("players", players);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Il faut au moins être deux pour jouer, sale alcoolique", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
