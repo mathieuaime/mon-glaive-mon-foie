@@ -21,7 +21,7 @@ public class SplashActivity extends Activity {
                     sleep(2000);
                 } catch (Exception ignored) {
                 } finally {
-                    Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent i = new Intent(SplashActivity.this, PlayerSelectionActivity.class);
                     startActivity(i);
                     finish();
                 }

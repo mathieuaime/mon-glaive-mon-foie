@@ -59,17 +59,18 @@ public class PlayerSelectionActivity extends Activity {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT);
 
         hint++;
-        EditText edittTxt = new EditText(this);
+        EditText editText = new EditText(this);
 
-        edittTxt.setPadding(padding, padding, padding, padding);
-        edittTxt.setLayoutParams(params);
-        edittTxt.setBackground(ContextCompat.getDrawable(this, R.drawable.player_input));
-        edittTxt.setHint(getString(R.string.player) + " " + hint);
-        edittTxt.setInputType(InputType.TYPE_CLASS_TEXT);
-        edittTxt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        edittTxt.setId(hint);
+        editText.setPadding(padding, padding, padding, padding);
+        editText.setLayoutParams(params);
+        editText.setBackground(ContextCompat.getDrawable(this, R.drawable.player_input));
+        editText.setHint(getString(R.string.player) + " " + hint);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        editText.setId(hint);
+        editText.requestFocus();
 
-        edittTxt.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        parentLayout.addView(edittTxt, hint - 1);
+        editText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        parentLayout.addView(editText, hint - 1);
     }
 }
