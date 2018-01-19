@@ -1,14 +1,14 @@
 <resources>
-    <string name="app_name">Mon glaive mon foie</string>
+    <string name="app_name" translatable="false">Mon glaive mon foie</string>
     <string name="diceDisplay">Dés : %1$s</string>
-    <string name="roleDisplay">Role : %1$s</string>
+    <string name="roleDisplay">Rôle : %1$s</string>
     <string name="playersDisplay">Joueurs : %1$s</string>
     <string name="playerDisplay">Joueur %1$s</string>
-    <string name="logo">Logo</string>
-    <string name="mon_glaive_mon_foie">MON GLAIVE MON FOIE</string>
+    <string name="logo" translatable="false">Logo</string>
+    <string name="mon_glaive_mon_foie" translatable="false">MON GLAIVE MON FOIE</string>
     <string name="catin_interpose">La catin s\'interpose</string>
     <string name="not_ready">Vous n\'êtes pas prêts</string>
-    <string name="bonjour">BONJOUR !</string>
-    <string name="player">Player</string>
+    <string name="bonjour" translatable="false">BONJOUR !</string>
     <string name="play">Jouer</string>
+    <string name="not_enought_players_error">Il faut au moins être deux pour jouer ... sale alcoolique</string>
 </resources>
