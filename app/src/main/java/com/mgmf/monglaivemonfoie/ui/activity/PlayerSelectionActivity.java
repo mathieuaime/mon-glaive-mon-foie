@@ -46,13 +46,13 @@ public class PlayerSelectionActivity extends Activity {
                     }
                 }
             }
-
+            
             if (players.size() > 1) {
                 Intent intent = new Intent(PlayerSelectionActivity.this, MainActivity.class);
                 intent.putStringArrayListExtra("players", players);
                 startActivity(intent);
             } else {
-                Toast.makeText(this, "Il faut au moins être deux pour jouer, sale alcoolique", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.not_enought_players_error, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -69,7 +69,7 @@ public class PlayerSelectionActivity extends Activity {
         editText.setPadding(padding, padding, padding, padding);
         editText.setLayoutParams(params);
         editText.setBackground(ContextCompat.getDrawable(this, R.drawable.player_input));
-        editText.setHint(getString(R.string.player) + " " + hint);
+        editText.setHint(String.format(getString(R.string.playerDisplay), String.valueOf(hint)));
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         editText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         editText.setId(hint);

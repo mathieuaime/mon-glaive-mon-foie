@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="diceDisplay">Dice : %1$s</string>
+    <string name="roleDisplay">Role : %1$s</string>
+    <string name="playersDisplay">Players : %1$s</string>
+    <string name="playerDisplay">Player %1$s</string>
+    <string name="catin_interpose">The whore interposes</string>
+    <string name="not_ready">You are not ready</string>
+    <string name="play">Play</string>
+    <string name="not_enought_players_error">It takes at least two to play ... drunkard</string>
+</resources>

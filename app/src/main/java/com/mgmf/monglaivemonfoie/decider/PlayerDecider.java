@@ -45,7 +45,7 @@ public class PlayerDecider {
         //if the dices have almost one 3
         if (numberOfThree > 0) {
             if (!role.equals(Role.Prisonnier)) {
-                if (player.hasRole(Role.Prisonnier)) {
+                if (player.hasRole(Role.Prisonnier) && !(numberOfThree == 1 && specialDice.getValue() == 3)) {
                     if (removeRoleToPlayer(events, player, Role.Prisonnier) && !role.equals(Role.Attaque)) {
                         events.add(new JailOutDrinkEvent(specialDice.getValue(), player));
                         return events;
