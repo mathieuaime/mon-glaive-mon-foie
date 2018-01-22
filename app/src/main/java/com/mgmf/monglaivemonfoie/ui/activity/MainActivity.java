@@ -47,8 +47,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private boolean shake = true;
 
-    private SensorManager sensorMgr;
-
     private Game game;
     private TextView playerTextView;
     private TextView roleTextView;
@@ -154,9 +152,11 @@ public class MainActivity extends Activity implements SensorEventListener {
         ListView listPlayerTextView = findViewById(R.id.listPlayersTextView);
         listPlayerTextView.setAdapter(adapter);
 
-        sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-        boolean accelSupported = sensorMgr.registerListener(this, sensorMgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_GAME);
-        if (!accelSupported) sensorMgr.unregisterListener(this); //no accelerometer on the device
+        SensorManager sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+        if (sensorMgr != null) {
+            boolean accelSupported = sensorMgr.registerListener(this, sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+            if (!accelSupported) sensorMgr.unregisterListener(this); //no accelerometer on the device
+        }
 
         updatePlayersDisplay();
     }
@@ -226,15 +226,14 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Sensor mySensor = event.sensor;
-        if (mySensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             long curTime = System.currentTimeMillis();
             if ((curTime - lastUpdate) > UPDATE_DELAY) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
-                float x = event.values[SensorManager.DATA_X];
-                float y = event.values[SensorManager.DATA_Y];
-                float z = event.values[SensorManager.DATA_Z];
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
                 float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
                 if (speed > SHAKE_THRESHOLD && shake) { //the screen was shaked
                     play();
