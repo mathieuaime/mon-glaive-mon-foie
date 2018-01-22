@@ -62,6 +62,10 @@ public class MainActivity extends Activity implements SensorEventListener {
     private Animation diceAnimation;
     private Animation specialDiceAnimation;
 
+    private Dice die1;
+    private Dice die2;
+    private Dice specialDie;
+
     final Animation.AnimationListener animationListener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
@@ -123,6 +127,10 @@ public class MainActivity extends Activity implements SensorEventListener {
         super.onCreate(savedInstanceState);
 
         game = new Game(getIntent().getStringArrayListExtra("players"));
+
+        die1 = game.getDices()[0];
+        die2 = game.getDices()[1];
+        specialDie = game.getDices()[0];
 
         setContentView(R.layout.activity_main);
 
