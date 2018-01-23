@@ -30,8 +30,13 @@ public class Game {
         }
     }
 
-    public void roll() {
+    public boolean roll() {
+        int d1 = dice1.getValue();
+        int d2 = dice2.getValue();
+
         DiceUtil.roll(dice1, dice2, specialDice);
+
+        return d1 == dice1.getValue() && d2 == dice2.getValue();
     }
 
     public List<Event> play() {
@@ -44,6 +49,10 @@ public class Game {
         return new Dice[]{dice1, dice2, specialDice};
     }
 
+    public Player getPreviousPlayer() {
+        return players.get((actualPlayer - 1) % NB_PLAYERS);
+    }
+
     public Player getActualPlayer() {
         return players.get(actualPlayer);
     }
@@ -51,4 +60,5 @@ public class Game {
     public List<Player> getPlayers() {
         return players;
     }
+
 }

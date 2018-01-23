@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.decider.RoleDecider;
 import com.mgmf.monglaivemonfoie.event.Event;
+import com.mgmf.monglaivemonfoie.event.action.PeasantBattleEvent;
 import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.model.Game;
 import com.mgmf.monglaivemonfoie.model.Player;
@@ -39,32 +40,34 @@ import java.util.List;
 
 public class MainActivity extends Activity implements SensorEventListener {
 
-    private long lastUpdate = -1;
-    private float last_x, last_y, last_z;
-
     private static final int UPDATE_DELAY = 50;
     private static final int SHAKE_THRESHOLD = 700;
 
-    private boolean shake = true;
-
     private Game game;
+
+    private RelativeLayout rlayout;
+
     private TextView playerTextView;
+
     private TextView roleTextView;
     private TextView gameTextView;
     private ImageView die1ImageView;
     private ImageView die2ImageView;
     private ImageView specialDieImageView;
     private ArrayAdapter adapter;
-    private RelativeLayout rlayout;
+
     private final List<String> displayPlayers = new ArrayList<>();
     private Iterator<String> displayIterator;
 
+    private boolean shake = true;
+
+    private long lastUpdate = -1;
+    private float last_x;
+    private float last_y;
+    private float last_z;
+
     private Animation diceAnimation;
     private Animation specialDiceAnimation;
-
-    private Dice die1;
-    private Dice die2;
-    private Dice specialDie;
 
     final Animation.AnimationListener animationListener = new Animation.AnimationListener() {
         @Override
@@ -86,11 +89,14 @@ public class MainActivity extends Activity implements SensorEventListener {
     };
 
     final Animation.AnimationListener animationListenerSpecialDice = new Animation.AnimationListener() {
-        private List<Event> events;
+        private List<Event> events = new ArrayList<>();
 
         @Override
         public void onAnimationStart(Animation animation) {
-            events = game.play();
+            if (sameDice) {
+                events.add(new PeasantBattleEvent(game.getDices()[2].getValue(), game.getPreviousPlayer(), game.getActualPlayer()));
+            }
+            events.addAll(game.play());
             roleTextView.setText("");
         }
 
@@ -108,9 +114,10 @@ public class MainActivity extends Activity implements SensorEventListener {
     };
 
     private final View.OnClickListener gameListener = v -> play();
+    private boolean sameDice;
 
     private void play() {
-        game.roll();
+        sameDice = game.roll();
         die1ImageView.startAnimation(diceAnimation);
         die2ImageView.startAnimation(diceAnimation);
         specialDieImageView.startAnimation(specialDiceAnimation);
@@ -127,10 +134,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         super.onCreate(savedInstanceState);
 
         game = new Game(getIntent().getStringArrayListExtra("players"));
-
-        die1 = game.getDices()[0];
-        die2 = game.getDices()[1];
-        specialDie = game.getDices()[0];
 
         setContentView(R.layout.activity_main);
 
@@ -163,7 +166,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         SensorManager sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorMgr != null) {
             boolean accelSupported = sensorMgr.registerListener(this, sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
-            if (!accelSupported) sensorMgr.unregisterListener(this); //no accelerometer on the device
+            if (!accelSupported)
+                sensorMgr.unregisterListener(this); //no accelerometer on the device
         }
 
         updatePlayersDisplay();

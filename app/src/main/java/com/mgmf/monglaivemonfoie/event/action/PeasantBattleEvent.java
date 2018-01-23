@@ -1,31 +1,29 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
-import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.model.Player;
 
 import java.util.List;
 
 /**
- * Event for the god battle.
+ * Event for the peasant battle.
  *
  * @author Mathieu Aimé
  */
 
-public class GodBattleEvent extends BattleEvent {
+public class PeasantBattleEvent extends BattleEvent {
 
-    public GodBattleEvent(int nb, Player... player) {
+    public PeasantBattleEvent(int nb, Player... player) {
         super(nb, player);
     }
 
     @Override
     protected void actionToWinner(Player winner, List<Event> events) {
-        PlayerDecider.becomeGod(events, winner, players);
     }
 
     @Override
     protected String getRole() {
-        return "dieu";
+        return "peasant";
     }
 
 }
