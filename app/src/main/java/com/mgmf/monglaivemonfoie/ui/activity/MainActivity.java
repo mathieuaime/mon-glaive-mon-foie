@@ -155,7 +155,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         SensorManager sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorMgr != null) {
             boolean accelSupported = sensorMgr.registerListener(this, sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
-            if (!accelSupported) sensorMgr.unregisterListener(this); //no accelerometer on the device
+            if (!accelSupported)
+                sensorMgr.unregisterListener(this); //no accelerometer on the device
         }
 
         updatePlayersDisplay();

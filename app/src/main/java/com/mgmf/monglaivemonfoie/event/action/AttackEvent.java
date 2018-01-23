@@ -1,5 +1,8 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
+import android.content.res.Resources;
+
+import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.model.Role;
@@ -14,6 +17,8 @@ import com.mgmf.monglaivemonfoie.util.PlayerUtil;
 
 public class AttackEvent extends ActionEvent {
 
+    private Resources resources = Resources.getSystem();
+
     public AttackEvent(int nb, Player... player) {
         super(nb, player);
     }
@@ -27,46 +32,47 @@ public class AttackEvent extends ActionEvent {
         Player heros = PlayerUtil.getPlayerByRole(Role.Heros, players);
         Player oracle = PlayerUtil.getPlayerByRole(Role.Oracle, players);
 
-        builder.append("Dieu attaque le village pour ")
-                .append(DiceUtil.displayGorgees(nb));
+        String nbDrink = DiceUtil.displayGorgees(nb);
+
+        builder.append(String.format(resources.getString(R.string.godAttack), nbDrink));
 
         if (dieu != null) {
 
             if (catin != null) {
-                addMessage(builder, "La catin s'interpose !");
+                addMessage(builder, resources.getString(R.string.catinIntervention));
                 int catinDice = DiceUtil.random();
-                addMessage(builder, "La catin fait " + catinDice);
+                addMessage(builder, String.format(resources.getString(R.string.catinResult), catinDice));
                 if (catinDice == 1) {
-                    addMessage(builder, "DIEU EST VAINCU !!!!" + dieu.getName() + " boit " + DiceUtil.displayGorgees(nb) + " !");
+                    addMessage(builder, String.format(resources.getString(R.string.heroWin), dieu.getName(), nbDrink));
                     return builder.toString();
                 } else {
-                    addMessage(builder, "La catin échoue lamentablement ... " + catin.getName() + " boit " + DiceUtil.displayGorgees(catinDice));
+                    addMessage(builder, String.format(resources.getString(R.string.catinFail), catin.getName(), DiceUtil.displayGorgees(catinDice)));
                 }
             }
 
             if (heros != null) {
-                addMessage(builder, "Le héros s'interpose !");
+                addMessage(builder, resources.getString(R.string.heroIntervention));
                 if (oracle != null) {
-                    addMessage(builder, "L'oracle prédit le coup du héros");
+                    addMessage(builder, resources.getString(R.string.oraclePrediction));
                 }
                 int herosDice = DiceUtil.random();
-                addMessage(builder, "Le héros fait " + herosDice);
+                addMessage(builder, String.format(resources.getString(R.string.heroResult), herosDice));
                 if (herosDice == 1) {
-                    addMessage(builder, "LE HEROS EST FOUDROYE !!!! " + heros.getName() + " SEC !!!! " + "\n" + dieu.getName() + " donne " + DiceUtil.displayGorgees(nb) + " !");
+                    addMessage(builder, String.format(resources.getString(R.string.godWin), heros.getName(), dieu.getName(), nbDrink));
                     heros.removeRole(Role.Heros);
                 } else if (herosDice == 6) {
-                    addMessage(builder, "DIEU EST VAINCU !!!! " + dieu.getName() + " boit " + DiceUtil.displayGorgees(nb) + " !");
+                    addMessage(builder, String.format(resources.getString(R.string.heroWin), dieu.getName(), nbDrink));
                     return builder.toString();
                 } else if (herosDice > 3) {
-                    addMessage(builder, "Le héros se sacrifie pour le village" + "\n" + heros.getName() + " boit " + DiceUtil.displayGorgees(nb));
+                    addMessage(builder, String.format(resources.getString(R.string.godFail), heros.getName(), nbDrink));
                 } else {
-                    addMessage(builder, "Le héros échoue à sauver le village" + "\n" + heros.getName() + " boit " + DiceUtil.displayGorgees(herosDice) + " et " + dieu.getName() + " donne " + DiceUtil.displayGorgees(nb));
+                    addMessage(builder, String.format(resources.getString(R.string.heroFail), heros.getName(), DiceUtil.displayGorgees(herosDice), dieu.getName(), nbDrink));
                 }
             } else {
-                addMessage(builder, "Il n'y a pas de héros, " + dieu.getName() + " donne " + DiceUtil.displayGorgees(nb));
+                addMessage(builder, String.format(resources.getString(R.string.noHero), dieu.getName(), nbDrink));
             }
         } else {
-            addMessage(builder, "Il n'y a pas de dieu ...");
+            addMessage(builder, resources.getString(R.string.noGod));
         }
 
         return builder.toString();
