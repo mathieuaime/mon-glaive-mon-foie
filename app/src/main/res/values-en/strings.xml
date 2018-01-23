@@ -4,8 +4,52 @@
     <string name="roleDisplay">Role : %1$s</string>
     <string name="playersDisplay">Players : %1$s</string>
     <string name="playerDisplay">Player %1$s</string>
-    <string name="catin_interpose">The whore interposes</string>
+
     <string name="not_ready">You are not ready</string>
     <string name="play">Play</string>
-    <string name="not_enought_players_error">It takes at least two to play ... drunkard</string>
+    <string name="become">become</string>
+    <string name="unassign">is not anymore</string>
+    <string name="drink">drink</string>
+
+    <string name="battle">%s between %s and %s</string>
+    <string name="actionBattle">%s do %d</string>
+    <string name="godBattle">God battle</string>
+    <string name="peasantBattle">Peasant battle</string>
+    <string name="battleEquality">Equality, we play again for double</string>
+    <string name="battleWin">%s won !</string>
+
+    <string name="not_enought_players_error">It takes at least two persons to play … drunkard</string>
+
+    <string name="godAttack">God attack the village for %s</string>
+    <string name="catinFail">The whore fail lamentably … %s drink %s</string>
+    <string name="catinIntervention">The whore interposes !</string>
+    <string name="heroIntervention">The hero interposes !</string>
+    <string name="oraclePrediction">The oracle predict the hero turn</string>
+    <string name="noGod">There is no god …</string>
+    <string name="noHero">There is no hero, %s give %s</string>
+    <string name="catinResult">The whore do %d</string>
+    <string name="heroResult">The hero do %d</string>
+    <string name="heroWin">GOD IS DEFEATED !!!! %s drink %s !</string>
+    <string name="godWin">THE HERO IS BLASTED !!!! %s GULP !!!! %s give %s !</string>
+    <string name="heroFail">The hero failed to protect the village %s drink %s and %s give %s</string>
+    <string name="godFail">The hero sacrifices himself for the village %s drink %s</string>
+
+    <string name="roleHero">Hero</string>
+    <string name="roleGod">God</string>
+    <string name="roleOracle">Oracle</string>
+    <string name="roleSquire">Squire</string>
+    <string name="rolePrisoner">Prisoner</string>
+    <string name="roleWhore">Whore</string>
+    <string name="roleInnkeeper">Innkeeper</string>
+    <string name="rolePrincess">Princess</string>
+    <string name="roleDragon">Dragon</string>
+    <string name="roleBum">Bum</string>
+    <string name="roleSoothsayer">Soothsayer</string>
+    <string name="roleApprentice">Apprentice</string>
+    <string name="roleHussy">Hussy</string>
+    <string name="roleEmpress">Empress</string>
+    <string name="roleDevil">Devil</string>
+    <string name="roleAttack">God attack the village !</string>
+    <string name="roleDrink">You give !</string>
+    <string name="roleAllDrink">Everbody drink !</string>
 </resources>

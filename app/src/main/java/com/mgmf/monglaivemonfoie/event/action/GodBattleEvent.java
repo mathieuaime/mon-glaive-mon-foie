@@ -1,5 +1,7 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
+import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.model.Player;
@@ -13,7 +15,6 @@ import java.util.List;
  */
 
 public class GodBattleEvent extends BattleEvent {
-
     public GodBattleEvent(Player... player) {
         super(player);
     }
@@ -24,8 +25,8 @@ public class GodBattleEvent extends BattleEvent {
     }
 
     @Override
-    protected String getRole() {
-        return "dieu";
+    protected String getBattle() {
+        return App.getAppContext().getString(R.string.godBattle);
     }
 
 }

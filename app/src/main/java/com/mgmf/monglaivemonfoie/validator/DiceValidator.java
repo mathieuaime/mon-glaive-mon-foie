@@ -1,7 +1,5 @@
 package com.mgmf.monglaivemonfoie.validator;
 
-import android.annotation.SuppressLint;
-
 import com.mgmf.monglaivemonfoie.exception.BadDiceException;
 import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;

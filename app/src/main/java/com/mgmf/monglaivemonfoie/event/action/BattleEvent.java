@@ -1,5 +1,9 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
+import android.content.Context;
+
+import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
 import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.event.drink.TakeDrinkEvent;
@@ -17,8 +21,7 @@ import java.util.List;
  */
 
 public abstract class BattleEvent extends ActionEvent {
-
-    protected BattleEvent(Player... player) {
+    BattleEvent(Player... player) {
         super(1, player);
     }
 
@@ -28,48 +31,51 @@ public abstract class BattleEvent extends ActionEvent {
             StringBuilder builder = new StringBuilder();
             Player player1 = players.get(0);
             Player player2 = players.get(1);
-            builder.append("Bataille de ")
-                    .append(getRole())
-                    .append(" entre ")
-                    .append(player1.getName())
-                    .append(" et ")
-                    .append(player2.getName())
-                    .append('\n');
+
+            Context context = App.getAppContext();
+
+            builder.append(String.format(context.getString(R.string.battle), getBattle(), player1.getName(), player2.getName()))
+                    .append(NEW_LINE);
 
             Dice player1Die = new Dice();
             Dice player2Die = new Dice();
-            int nbGorgees = nb;
 
             do {
                 DiceUtil.roll(player1Die, player2Die);
-                builder.append(player1.getName()).append(" fait ").append(player1Die.getValue()).append("\n");
-                builder.append(player2.getName()).append(" fait ").append(player2Die.getValue()).append("\n");
+                builder.append(String.format(context.getString(R.string.actionBattle), player1.getName(), player1Die.getValue()))
+                        .append(NEW_LINE)
+                        .append(String.format(context.getString(R.string.actionBattle), player2.getName(), player2Die.getValue()))
+                        .append(NEW_LINE);
+
                 if (player1Die.getValue() == player2Die.getValue()) {
-                    nbGorgees <<= 1;
-                    builder.append("Egalité, on recommence pour le double").append("\n");
+                    nb <<= 1;
+                    builder.append(context.getString(R.string.battleEquality))
+                            .append(NEW_LINE);
                 }
+
             } while (player1Die.getValue() == player2Die.getValue());
 
             Player winner = player1Die.getValue() > player2Die.getValue() ? player1 : player2;
             Player looser = player1Die.getValue() < player2Die.getValue() ? player1 : player2;
 
-            builder.append(winner.getName()).append(" a gagné !").append('\n');
+            builder.append(String.format(context.getString(R.string.battleWin), winner.getName()))
+                    .append(NEW_LINE);
 
             List<Event> events = new ArrayList<>();
-            events.add(new TakeDrinkEvent(nbGorgees * Math.abs(player1Die.getValue() - player2Die.getValue()), looser));
+            events.add(new TakeDrinkEvent(nb * Math.abs(player1Die.getValue() - player2Die.getValue()), looser));
             for (Event e : events) {
-                builder.append(e.play()).append('\n');
+                builder.append(e.play()).append(NEW_LINE);
             }
 
             actionToWinner(winner, events);
 
             return builder.toString();
         } else {
-            throw new IllegalArgumentException("A god battle must be between 2 players");
+            throw new IllegalArgumentException("A battle must be between 2 players");
         }
     }
 
     protected abstract void actionToWinner(Player winner, List<Event> events);
 
-    protected abstract String getRole();
+    protected abstract String getBattle();
 }

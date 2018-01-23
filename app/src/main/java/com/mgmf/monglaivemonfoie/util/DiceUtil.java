@@ -1,5 +1,9 @@
 package com.mgmf.monglaivemonfoie.util;
 
+import android.content.res.Resources;
+
+import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.model.Dice;
 
 import java.util.Random;
@@ -30,15 +34,7 @@ public class DiceUtil {
     }
 
     public static String displayGorgees(int value) {
-        return value + " gorgée" + (value > 1 ? "s" : "");
-    }
-
-    public static String displayDices(Dice[] dices) {
-        StringBuilder builder = new StringBuilder();
-        for (Dice d : dices) {
-            builder.append(String.valueOf(d.getValue())).append(" ");
-        }
-        return builder.toString();
+        return value + " " + App.getAppContext().getString(R.string.drink) + (value > 1 ? "s" : "");
     }
 
     public static int random() {

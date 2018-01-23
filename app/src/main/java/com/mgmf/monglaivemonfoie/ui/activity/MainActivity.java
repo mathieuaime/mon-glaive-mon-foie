@@ -100,7 +100,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                 events.add(new PeasantBattleEvent(game.getPreviousPlayer(), game.getActualPlayer()));
             }
             events.addAll(game.play());
-            if(sameDice) {
+            if (sameDice) {
                 System.out.println(events);
             }
             roleTextView.setText("");
