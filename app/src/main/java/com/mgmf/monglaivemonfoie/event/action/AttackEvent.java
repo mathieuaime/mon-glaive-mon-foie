@@ -46,11 +46,24 @@ public class AttackEvent extends ActionEvent {
 
             if (heros != null) {
                 addMessage(builder, "Le héros s'interpose !");
+                int prediction = 0;
                 if (oracle != null) {
                     addMessage(builder, "L'oracle prédit le coup du héros");
+                    prediction = DiceUtil.random();
+                    addMessage(builder, "L'oracle prédit " + prediction);
                 }
                 int herosDice = DiceUtil.random();
                 addMessage(builder, "Le héros fait " + herosDice);
+
+                if(prediction != 0) {
+                    if(herosDice == prediction) {
+                        addMessage(builder, "L'oracle distribue " + DiceUtil.displayGorgees(prediction));
+                    } else {
+                        herosDice = herosDice + Integer.compare(prediction, herosDice);
+                        addMessage(builder, "L'oracle oriente le score du héros vers " + herosDice);
+                    }
+                }
+
                 if (herosDice == 1) {
                     addMessage(builder, "LE HEROS EST FOUDROYE !!!! " + heros.getName() + " SEC !!!! " + "\n" + dieu.getName() + " donne " + DiceUtil.displayGorgees(nb) + " !");
                     heros.removeRole(Role.Heros);
