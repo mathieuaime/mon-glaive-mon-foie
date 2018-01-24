@@ -1,6 +1,7 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
@@ -51,11 +52,27 @@ public class AttackEvent extends ActionEvent {
 
             if (heros != null) {
                 addMessage(builder, context.getString(R.string.heroIntervention));
+                int oraclePrediction = 0;
                 if (oracle != null) {
                     addMessage(builder, context.getString(R.string.oraclePrediction));
+                    //Toast.makeText(App.getAppContext(), "Quelle est la prédiction de l'oracle ?", Toast.LENGTH_LONG).show();
+                    oraclePrediction = DiceUtil.random();
+                    addMessage(builder, "L'oracle prédit " + oraclePrediction);
                 }
+
                 int herosDice = DiceUtil.random();
                 addMessage(builder, String.format(context.getString(R.string.heroResult), herosDice));
+
+                if (oraclePrediction != 0) {
+                    if (herosDice == oraclePrediction) {
+                        addMessage(builder, "L'oracle a prédit juste ! " + oracle.getName() + " donne " + DiceUtil.displayGorgees(oraclePrediction));
+                    } else {
+                        addMessage(builder, "L'oracle oriente le coup du héros");
+                        herosDice += Integer.compare(oraclePrediction, herosDice);
+                        addMessage(builder, String.format(context.getString(R.string.heroResult), herosDice));
+                    }
+                }
+
                 if (herosDice == 1) {
                     addMessage(builder, String.format(context.getString(R.string.godWin), heros.getName(), dieu.getName(), nbDrink));
                     heros.removeRole(Role.Heros);
