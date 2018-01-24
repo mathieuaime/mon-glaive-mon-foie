@@ -2,6 +2,7 @@ package com.mgmf.monglaivemonfoie.model;
 
 import android.content.res.Resources;
 
+import com.mgmf.App;
 import com.mgmf.monglaivemonfoie.R;
 
 /**
@@ -33,15 +34,11 @@ public enum Role {
     private final String displayName;
 
     Role(final int role) {
-        this.displayName = Constants.resources.getString(role);
+        this.displayName = App.getAppContext().getString(role);
     }
 
     @Override
     public String toString() {
         return this.displayName;
-    }
-
-    private static class Constants {
-        private static final Resources resources = Resources.getSystem();
     }
 }

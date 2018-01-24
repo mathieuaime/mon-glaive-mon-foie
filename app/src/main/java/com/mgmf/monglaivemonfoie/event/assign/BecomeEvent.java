@@ -1,7 +1,6 @@
 package com.mgmf.monglaivemonfoie.event.assign;
 
-import android.content.res.Resources;
-
+import com.mgmf.App;
 import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.event.AssignEvent;
 import com.mgmf.monglaivemonfoie.model.Assignment;
@@ -19,6 +18,6 @@ public class BecomeEvent extends AssignEvent {
 
     @Override
     protected String getAction() {
-        return Resources.getSystem().getString(R.string.become);
+        return App.getAppContext().getString(R.string.become);
     }
 }

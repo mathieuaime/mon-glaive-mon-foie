@@ -4,6 +4,7 @@
     <string name="logo" translatable="false">Logo</string>
     <string name="mon_glaive_mon_foie" translatable="false">MON GLAIVE MON FOIE</string>
     <string name="bonjour" translatable="false">BONJOUR !</string>
+    <string name="plus" translatable="false">+</string>
 
     <string name="diceDisplay">Dés : %1$s</string>
     <string name="roleDisplay">Rôle : %1$s</string>
@@ -15,6 +16,13 @@
     <string name="become">devient</string>
     <string name="unassign">n\'est plus</string>
     <string name="drink">gorgée</string>
+
+    <string name="battle">%s entre %s et %s</string>
+    <string name="actionBattle">%s fait %d</string>
+    <string name="godBattle">Bataille de dieux</string>
+    <string name="peasantBattle">Bataille de paysans</string>
+    <string name="battleEquality">Egalité, on recommence pour le double</string>
+    <string name="battleWin">%s a gagné !</string>
 
     <string name="not_enought_players_error">Il faut au moins être deux pour jouer … sale alcoolique</string>
 

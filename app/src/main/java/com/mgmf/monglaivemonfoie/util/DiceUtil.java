@@ -2,6 +2,7 @@ package com.mgmf.monglaivemonfoie.util;
 
 import android.content.res.Resources;
 
+import com.mgmf.App;
 import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.model.Dice;
 
@@ -33,7 +34,7 @@ public class DiceUtil {
     }
 
     public static String displayGorgees(int value) {
-        return value + " " + Resources.getSystem().getString(R.string.drink) + (value > 1 ? "s" : "");
+        return value + " " + App.getAppContext().getString(R.string.drink) + (value > 1 ? "s" : "");
     }
 
     public static int random() {

@@ -11,6 +11,13 @@
     <string name="unassign">is not anymore</string>
     <string name="drink">drink</string>
 
+    <string name="battle">%s between %s and %s</string>
+    <string name="actionBattle">%s do %d</string>
+    <string name="godBattle">God battle</string>
+    <string name="peasantBattle">Peasant battle</string>
+    <string name="battleEquality">Equality, we play again for double</string>
+    <string name="battleWin">%s won !</string>
+
     <string name="not_enought_players_error">It takes at least two persons to play … drunkard</string>
 
     <string name="godAttack">God attack the village for %s</string>
