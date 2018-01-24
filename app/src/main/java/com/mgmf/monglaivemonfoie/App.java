@@ -1,4 +1,4 @@
-package com.mgmf;
+package com.mgmf.monglaivemonfoie;
 
 import android.app.Application;
 import android.content.Context;

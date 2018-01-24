@@ -2,7 +2,7 @@ package com.mgmf.monglaivemonfoie.event.action;
 
 import android.content.Context;
 
-import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
 import com.mgmf.monglaivemonfoie.model.Player;

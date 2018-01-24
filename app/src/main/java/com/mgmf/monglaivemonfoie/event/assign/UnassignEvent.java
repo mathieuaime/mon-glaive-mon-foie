@@ -1,6 +1,6 @@
 package com.mgmf.monglaivemonfoie.event.assign;
 
-import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.event.AssignEvent;
 import com.mgmf.monglaivemonfoie.model.Assignment;

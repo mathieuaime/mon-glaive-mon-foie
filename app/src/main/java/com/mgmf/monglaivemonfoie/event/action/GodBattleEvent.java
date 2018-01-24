@@ -1,6 +1,6 @@
 package com.mgmf.monglaivemonfoie.event.action;
 
-import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.event.Event;

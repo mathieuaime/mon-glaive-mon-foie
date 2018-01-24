@@ -1,8 +1,6 @@
 package com.mgmf.monglaivemonfoie.model;
 
-import android.content.res.Resources;
-
-import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
 
 /**
