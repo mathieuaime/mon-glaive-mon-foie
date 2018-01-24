@@ -71,7 +71,7 @@ public class PlayerSelectionActivity extends Activity {
         editText.setLayoutParams(params);
         editText.setBackground(ContextCompat.getDrawable(this, R.drawable.player_input));
         editText.setHint(String.format(getString(R.string.playerDisplay), String.valueOf(hint)));
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         editText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         editText.setId(hint);
         editText.requestFocus();

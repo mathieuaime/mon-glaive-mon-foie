@@ -13,8 +13,8 @@ import java.util.List;
 
 public class PeasantBattleEvent extends BattleEvent {
 
-    public PeasantBattleEvent(int nb, Player... player) {
-        super(nb, player);
+    public PeasantBattleEvent(Player... player) {
+        super(player);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class PeasantBattleEvent extends BattleEvent {
 
     @Override
     protected String getRole() {
-        return "peasant";
+        return "paysans";
     }
 
 }

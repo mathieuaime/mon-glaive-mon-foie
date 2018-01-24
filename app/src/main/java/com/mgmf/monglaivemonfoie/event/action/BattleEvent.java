@@ -18,8 +18,8 @@ import java.util.List;
 
 public abstract class BattleEvent extends ActionEvent {
 
-    protected BattleEvent(int nb, Player... player) {
-        super(nb, player);
+    protected BattleEvent(Player... player) {
+        super(1, player);
     }
 
     @Override
@@ -45,8 +45,8 @@ public abstract class BattleEvent extends ActionEvent {
                 builder.append(player1.getName()).append(" fait ").append(player1Die.getValue()).append("\n");
                 builder.append(player2.getName()).append(" fait ").append(player2Die.getValue()).append("\n");
                 if (player1Die.getValue() == player2Die.getValue()) {
-                    nbGorgees *= 2;
-                    builder.append("Egalité, on recommence pour ").append(DiceUtil.displayGorgees(nbGorgees)).append("\n");
+                    nbGorgees <<= 1;
+                    builder.append("Egalité, on recommence pour le double").append("\n");
                 }
             } while (player1Die.getValue() == player2Die.getValue());
 
@@ -56,7 +56,7 @@ public abstract class BattleEvent extends ActionEvent {
             builder.append(winner.getName()).append(" a gagné !").append('\n');
 
             List<Event> events = new ArrayList<>();
-            events.add(new TakeDrinkEvent(nbGorgees, looser));
+            events.add(new TakeDrinkEvent(nbGorgees * Math.abs(player1Die.getValue() - player2Die.getValue()), looser));
             for (Event e : events) {
                 builder.append(e.play()).append('\n');
             }

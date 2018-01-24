@@ -36,7 +36,7 @@ public class Game {
 
         DiceUtil.roll(dice1, dice2, specialDice);
 
-        return d1 == dice1.getValue() && d2 == dice2.getValue();
+        return (d1 == dice1.getValue() && d2 == dice2.getValue()) || (d1 == dice2.getValue() && d2 == dice1.getValue());
     }
 
     public List<Event> play() {
@@ -50,7 +50,9 @@ public class Game {
     }
 
     public Player getPreviousPlayer() {
-        return players.get((actualPlayer - 1) % NB_PLAYERS);
+        int index = (actualPlayer - 1) % NB_PLAYERS;
+        if (index < 0) index += NB_PLAYERS;
+        return players.get(index);
     }
 
     public Player getActualPlayer() {

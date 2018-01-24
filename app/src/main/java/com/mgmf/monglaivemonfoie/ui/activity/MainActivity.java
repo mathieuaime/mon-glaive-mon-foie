@@ -29,8 +29,10 @@ import com.mgmf.monglaivemonfoie.util.DiceUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * The main activity.
@@ -89,14 +91,18 @@ public class MainActivity extends Activity implements SensorEventListener {
     };
 
     final Animation.AnimationListener animationListenerSpecialDice = new Animation.AnimationListener() {
-        private List<Event> events = new ArrayList<>();
+        private List<Event> events = new CopyOnWriteArrayList<>();
 
         @Override
         public void onAnimationStart(Animation animation) {
+            events.clear();
             if (sameDice) {
-                events.add(new PeasantBattleEvent(game.getDices()[2].getValue(), game.getPreviousPlayer(), game.getActualPlayer()));
+                events.add(new PeasantBattleEvent(game.getPreviousPlayer(), game.getActualPlayer()));
             }
             events.addAll(game.play());
+            if(sameDice) {
+                System.out.println(events);
+            }
             roleTextView.setText("");
         }
 
@@ -118,6 +124,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private void play() {
         sameDice = game.roll();
+        System.out.println(Arrays.toString(game.getDices()) + " " + sameDice);
         die1ImageView.startAnimation(diceAnimation);
         die2ImageView.startAnimation(diceAnimation);
         specialDieImageView.startAnimation(specialDiceAnimation);
@@ -175,24 +182,23 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private void displayEvents(Collection<Event> events) {
         gameTextView.setText("");
-        for (Event event : events) {
-            displayEvent(event);
-        }
-    }
+        List<String> displays = new ArrayList<>();
 
-    private void displayEvent(Event event) {
-        String display = event.play();
-        String[] displays = display.split("\n");
-        if (displays.length > 1) {
-            this.displayIterator = Arrays.asList(displays).iterator();
+        for (Event event : events) {
+            String display = event.play();
+            Collections.addAll(displays, display.split("\n"));
+        }
+
+        if (displays.size() > 1) {
+            this.displayIterator = displays.iterator();
             shake = false;
             rlayout.setOnClickListener(eventListener);
             displayEventIterator();
-        } else if (displays.length == 1) {
+        } else if (displays.size() == 1) {
             if (gameTextView.getText().length() > 0) {
                 gameTextView.append("\n");
             }
-            gameTextView.append(displays[0]);
+            gameTextView.append(displays.get(0));
             updatePlayersDisplay();
         }
     }
