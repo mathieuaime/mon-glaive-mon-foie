@@ -50,12 +50,26 @@ public class AttackEvent extends ActionEvent {
             }
 
             if (heros != null) {
-                addMessage(builder, context.getString(R.string.heroIntervention));
+
+                addMessage(builder, "Le héros s'interpose !");
+                int prediction = 0;
                 if (oracle != null) {
-                    addMessage(builder, context.getString(R.string.oraclePrediction));
+                    addMessage(builder, "L'oracle prédit le coup du héros");
+                    prediction = DiceUtil.random();
+                    addMessage(builder, "L'oracle prédit " + prediction);
                 }
                 int herosDice = DiceUtil.random();
-                addMessage(builder, String.format(context.getString(R.string.heroResult), herosDice));
+                addMessage(builder, "Le héros fait " + herosDice);
+
+                if(prediction != 0) {
+                    if(herosDice == prediction) {
+                        addMessage(builder, "L'oracle distribue " + DiceUtil.displayGorgees(prediction));
+                    } else {
+                        herosDice = herosDice + Integer.compare(prediction, herosDice);
+                        addMessage(builder, "L'oracle oriente le score du héros vers " + herosDice);
+                    }
+                }
+
                 if (herosDice == 1) {
                     addMessage(builder, String.format(context.getString(R.string.godWin), heros.getName(), dieu.getName(), nbDrink));
                     heros.removeRole(Role.Heros);
