@@ -28,11 +28,8 @@ import com.mgmf.monglaivemonfoie.util.DiceUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * The main activity.
@@ -59,16 +56,18 @@ public class MainActivity extends Activity implements SensorEventListener {
     private ArrayAdapter adapter;
 
     private final List<String> displayPlayers = new ArrayList<>();
+
+    private Iterator<Event> eventIterator;
     private Iterator<String> displayIterator;
 
     private boolean shake = true;
-
     private long lastUpdate = -1;
     private float last_x;
     private float last_y;
-    private float last_z;
 
+    private float last_z;
     private Animation diceAnimation;
+
     private Animation specialDiceAnimation;
 
     final Animation.AnimationListener animationListener = new Animation.AnimationListener() {
@@ -91,26 +90,24 @@ public class MainActivity extends Activity implements SensorEventListener {
     };
 
     final Animation.AnimationListener animationListenerSpecialDice = new Animation.AnimationListener() {
-        private List<Event> events = new CopyOnWriteArrayList<>();
-
         @Override
         public void onAnimationStart(Animation animation) {
-            events.clear();
+            gameTextView.setText("");
+            playerTextView.setText(game.getActualPlayer().getName());
+            List<Event> events = new ArrayList<>();
             if (sameDice) {
                 events.add(new PeasantBattleEvent(game.getPreviousPlayer(), game.getActualPlayer()));
             }
             events.addAll(game.play());
-            if (sameDice) {
-                System.out.println(events);
-            }
+            eventIterator = events.iterator();
             roleTextView.setText("");
         }
 
         @Override
         public void onAnimationEnd(Animation animation) {
+            roleTextView.setText(RoleDecider.decideRole(game.getDices()).toString());
             specialDieImageView.setImageResource(getDiceDrawable(game.getDices()[2].getValue()));
-            updateDisplay();
-            displayEvents(events);
+            displayNextEvent();
         }
 
         @Override
@@ -120,6 +117,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     };
 
     private final View.OnClickListener gameListener = v -> play();
+    private final View.OnClickListener eventListener = v -> displayEventIterator();
+
     private boolean sameDice;
 
     private void play() {
@@ -133,8 +132,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     private int getDiceDrawable(int die) {
         return getResources().getIdentifier("die" + die, "drawable", getPackageName());
     }
-
-    private final View.OnClickListener eventListener = v -> displayEventIterator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,48 +177,64 @@ public class MainActivity extends Activity implements SensorEventListener {
         updatePlayersDisplay();
     }
 
-    private void displayEvents(Collection<Event> events) {
+    private void displayNextEvent() {
         gameTextView.setText("");
-        List<String> displays = new ArrayList<>();
 
-        for (Event event : events) {
+        if (eventIterator.hasNext()) {
+            Event event = eventIterator.next();
+
             String display = event.play();
-            Collections.addAll(displays, display.split("\n"));
-        }
 
-        if (displays.size() > 1) {
-            this.displayIterator = displays.iterator();
-            shake = false;
-            rlayout.setOnClickListener(eventListener);
-            displayEventIterator();
-        } else if (displays.size() == 1) {
-            if (gameTextView.getText().length() > 0) {
-                gameTextView.append("\n");
+            String[] displays = display.split("\n");
+
+            if (displays.length > 1) {
+                this.displayIterator = Arrays.asList(displays).iterator();
+                shake = false;
+                rlayout.setOnClickListener(eventListener);
+                displayEventIterator();
+            } else if (displays.length == 1) {
+                if (gameTextView.getText().length() > 0) {
+                    gameTextView.append("\n");
+                }
+                gameTextView.append(displays[0]);
+                updatePlayersDisplay();
+
+                if (eventIterator.hasNext()) {
+                    shake = false;
+                    rlayout.setOnClickListener(eventListener);
+                } else {
+                    resumeGame();
+                }
             }
-            gameTextView.append(displays.get(0));
-            updatePlayersDisplay();
         }
+    }
+
+    private void resumeGame() {
+        shake = true;
+        rlayout.setOnClickListener(gameListener);
+        updatePlayersDisplay();
     }
 
     private void displayEventIterator() {
-        if (displayIterator.hasNext()) {
+        if (displayIterator != null && displayIterator.hasNext()) {
             String display = displayIterator.next();
-            if (!display.equals("")) {
-                gameTextView.setText("");
-                gameTextView.append(display);
+            while (displayIterator.hasNext() && display.equals("")) {
+                display = displayIterator.next();
             }
-        }
 
-        if (!displayIterator.hasNext()) {
-            shake = true;
-            rlayout.setOnClickListener(gameListener);
+            if (!display.equals("")) {
+                gameTextView.setText(display);
+            }
+
+            if (!displayIterator.hasNext() && !eventIterator.hasNext()) {
+                resumeGame();
+            }
+        } else if (eventIterator.hasNext()) {
+            displayNextEvent();
             updatePlayersDisplay();
+        } else {
+            resumeGame();
         }
-    }
-
-    private void updateDisplay() {
-        playerTextView.setText(game.getActualPlayer().getName());
-        roleTextView.setText(RoleDecider.decideRole(game.getDices()).toString());
     }
 
     private void updatePlayersDisplay() {

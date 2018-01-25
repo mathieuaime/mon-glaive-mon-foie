@@ -2,7 +2,7 @@ package com.mgmf.monglaivemonfoie.event.action;
 
 import android.content.Context;
 
-import com.mgmf.App;
+import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
 import com.mgmf.monglaivemonfoie.model.Player;
@@ -51,22 +51,25 @@ public class AttackEvent extends ActionEvent {
 
             if (heros != null) {
 
-                addMessage(builder, "Le héros s'interpose !");
-                int prediction = 0;
+                addMessage(builder, context.getString(R.string.heroIntervention));
+                int oraclePrediction = 0;
                 if (oracle != null) {
-                    addMessage(builder, "L'oracle prédit le coup du héros");
-                    prediction = DiceUtil.random();
-                    addMessage(builder, "L'oracle prédit " + prediction);
+                    addMessage(builder, context.getString(R.string.oraclePrediction));
+                    oraclePrediction = DiceUtil.random();
+                    addMessage(builder, "L'oracle prédit " + oraclePrediction);
                 }
-                int herosDice = DiceUtil.random();
-                addMessage(builder, "Le héros fait " + herosDice);
 
-                if(prediction != 0) {
-                    if(herosDice == prediction) {
-                        addMessage(builder, "L'oracle distribue " + DiceUtil.displayGorgees(prediction));
+                int herosDice = DiceUtil.random();
+
+                addMessage(builder, String.format(context.getString(R.string.heroResult), herosDice));
+
+                if (oraclePrediction != 0) {
+                    if (herosDice == oraclePrediction) {
+                        addMessage(builder, "L'oracle a prédit juste ! " + oracle.getName() + " donne " + DiceUtil.displayGorgees(oraclePrediction));
                     } else {
-                        herosDice = herosDice + Integer.compare(prediction, herosDice);
-                        addMessage(builder, "L'oracle oriente le score du héros vers " + herosDice);
+                        addMessage(builder, "L'oracle oriente le coup du héros");
+                        herosDice += Integer.compare(oraclePrediction, herosDice);
+                        addMessage(builder, String.format(context.getString(R.string.heroResult), herosDice));
                     }
                 }
 
