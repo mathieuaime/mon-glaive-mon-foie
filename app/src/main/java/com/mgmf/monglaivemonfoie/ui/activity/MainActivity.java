@@ -96,7 +96,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             playerTextView.setText(game.getActualPlayer().getName());
             List<Event> events = new ArrayList<>();
             if (sameDice) {
-                events.add(new PeasantBattleEvent(game.getPreviousPlayer(), game.getActualPlayer()));
+                events.add(new PeasantBattleEvent(events, game.getPreviousPlayer(), game.getActualPlayer(), game.getApprentice()));
             }
             events.addAll(game.play());
             eventIterator = events.iterator();
@@ -123,7 +123,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private void play() {
         sameDice = game.roll();
-        System.out.println(Arrays.toString(game.getDices()) + " " + sameDice);
         die1ImageView.startAnimation(diceAnimation);
         die2ImageView.startAnimation(diceAnimation);
         specialDieImageView.startAnimation(specialDiceAnimation);
@@ -184,6 +183,11 @@ public class MainActivity extends Activity implements SensorEventListener {
             Event event = eventIterator.next();
 
             String display = event.play();
+
+            Dice[] dices = game.getDices();
+            die1ImageView.setImageResource(getDiceDrawable(dices[0].getValue()));
+            die2ImageView.setImageResource(getDiceDrawable(dices[1].getValue()));
+            specialDieImageView.setImageResource(getDiceDrawable(dices[2].getValue()));
 
             String[] displays = display.split("\n");
 

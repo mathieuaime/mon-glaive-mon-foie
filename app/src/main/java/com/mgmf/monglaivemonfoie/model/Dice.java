@@ -30,10 +30,6 @@ public class Dice {
         return value;
     }
 
-    public boolean isSpecial() {
-        return special;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,5 +51,9 @@ public class Dice {
     @Override
     public String toString() {
         return value + " ";
+    }
+
+    public void modifyValue(int diff) {
+        value += diff;
     }
 }

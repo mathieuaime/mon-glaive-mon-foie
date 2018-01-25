@@ -4,11 +4,15 @@ import android.content.Context;
 
 import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
+import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
+import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.model.Role;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
 import com.mgmf.monglaivemonfoie.util.PlayerUtil;
+
+import java.util.List;
 
 /**
  * Event for the attack.
@@ -17,8 +21,12 @@ import com.mgmf.monglaivemonfoie.util.PlayerUtil;
  */
 
 public class AttackEvent extends ActionEvent {
-    public AttackEvent(int nb, Player... player) {
+
+    private List<Event> events;
+
+    public AttackEvent(int nb, List<Event> events, Player... player) {
         super(nb, player);
+        this.events = events;
     }
 
     @Override
@@ -29,6 +37,8 @@ public class AttackEvent extends ActionEvent {
         Player catin = PlayerUtil.getPlayerByRole(Role.Catin, players);
         Player heros = PlayerUtil.getPlayerByRole(Role.Heros, players);
         Player oracle = PlayerUtil.getPlayerByRole(Role.Oracle, players);
+
+        Player apprenti = PlayerUtil.getPlayerByRole(Role.Apprenti, players);
 
         String nbDrink = DiceUtil.displayGorgees(nb);
         Context context = App.getAppContext();
@@ -43,9 +53,11 @@ public class AttackEvent extends ActionEvent {
                 addMessage(builder, String.format(context.getString(R.string.catinResult), catinDice));
                 if (catinDice == 1) {
                     addMessage(builder, String.format(context.getString(R.string.heroWin), dieu.getName(), nbDrink));
+                    PlayerDecider.takeDrinkIfExist(events, apprenti, nb);
                     return builder.toString();
                 } else {
                     addMessage(builder, String.format(context.getString(R.string.catinFail), catin.getName(), DiceUtil.displayGorgees(catinDice)));
+                    PlayerDecider.takeDrinkIfExist(events, apprenti, catinDice);
                 }
             }
 
@@ -66,6 +78,7 @@ public class AttackEvent extends ActionEvent {
                 if (oraclePrediction != 0) {
                     if (herosDice == oraclePrediction) {
                         addMessage(builder, "L'oracle a prédit juste ! " + oracle.getName() + " donne " + DiceUtil.displayGorgees(oraclePrediction));
+                        PlayerDecider.takeDrinkIfExist(events, apprenti, oraclePrediction);
                     } else {
                         addMessage(builder, "L'oracle oriente le coup du héros");
                         herosDice += Integer.compare(oraclePrediction, herosDice);
@@ -75,17 +88,22 @@ public class AttackEvent extends ActionEvent {
 
                 if (herosDice == 1) {
                     addMessage(builder, String.format(context.getString(R.string.godWin), heros.getName(), dieu.getName(), nbDrink));
+                    PlayerDecider.takeDrinkIfExist(events, apprenti, nb);
                     heros.removeRole(Role.Heros);
                 } else if (herosDice == 6) {
                     addMessage(builder, String.format(context.getString(R.string.heroWin), dieu.getName(), nbDrink));
+                    PlayerDecider.takeDrinkIfExist(events, apprenti, nb);
                     return builder.toString();
                 } else if (herosDice > 3) {
-                    addMessage(builder, String.format(context.getString(R.string.godFail), heros.getName(), nbDrink));
+                    addMessage(builder, String.format(context.getString(R.string.godFail), dieu.getName(), nbDrink));
+                    PlayerDecider.takeDrinkIfExist(events, apprenti, nb);
                 } else {
-                    addMessage(builder, String.format(context.getString(R.string.heroFail), heros.getName(), DiceUtil.displayGorgees(herosDice), dieu.getName(), nbDrink));
+                    addMessage(builder, String.format(context.getString(R.string.heroFail), heros.getName(), nbDrink, dieu.getName(), nbDrink));
+                    PlayerDecider.takeDrinkIfExist(events, apprenti, 2 * nb);
                 }
             } else {
                 addMessage(builder, String.format(context.getString(R.string.noHero), dieu.getName(), nbDrink));
+                PlayerDecider.takeDrinkIfExist(events, apprenti, nb);
             }
         } else {
             addMessage(builder, context.getString(R.string.noGod));

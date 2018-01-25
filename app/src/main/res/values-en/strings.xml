@@ -20,19 +20,19 @@
 
     <string name="not_enought_players_error">It takes at least two persons to play … drunkard</string>
 
-    <string name="godAttack">God attack the village for %s</string>
-    <string name="catinFail">The whore fail lamentably … %s drink %s</string>
+    <string name="godAttack">God attacks the village for %s</string>
+    <string name="catinFail">The whore fails lamentably … %s drink %s</string>
     <string name="catinIntervention">The whore interposes !</string>
     <string name="heroIntervention">The hero interposes !</string>
-    <string name="oraclePrediction">The oracle predict the hero turn</string>
+    <string name="oraclePrediction">The oracle predicts the hero turn</string>
     <string name="noGod">There is no god …</string>
     <string name="noHero">There is no hero, %s give %s</string>
     <string name="catinResult">The whore do %d</string>
     <string name="heroResult">The hero do %d</string>
-    <string name="heroWin">GOD IS DEFEATED !!!! %s drink %s !</string>
-    <string name="godWin">THE HERO IS BLASTED !!!! %s GULP !!!! %s give %s !</string>
-    <string name="heroFail">The hero failed to protect the village %s drink %s and %s give %s</string>
-    <string name="godFail">The hero sacrifices himself for the village %s drink %s</string>
+    <string name="heroWin">GOD IS DEFEATED !!!! %s drinks %s !</string>
+    <string name="godWin">THE HERO IS BLASTED !!!! %s GULP !!!! %s gives %s !</string>
+    <string name="heroFail">The hero fails to protect the village %s drinks %s and %s gives %s</string>
+    <string name="godFail">The hero saves himself %s gives %s</string>
 
     <string name="roleHero">Hero</string>
     <string name="roleGod">God</string>
@@ -49,7 +49,7 @@
     <string name="roleHussy">Hussy</string>
     <string name="roleEmpress">Empress</string>
     <string name="roleDevil">Devil</string>
-    <string name="roleAttack">God attack the village !</string>
+    <string name="roleAttack">God attacks the village !</string>
     <string name="roleDrink">You give !</string>
-    <string name="roleAllDrink">Everbody drink !</string>
+    <string name="roleAllDrink">Everbody drinks !</string>
 </resources>

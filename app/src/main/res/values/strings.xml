@@ -16,6 +16,7 @@
     <string name="become">devient</string>
     <string name="unassign">n\'est plus</string>
     <string name="drink">gorgée</string>
+    <string name="takeDrink">%s boit %s</string>
 
     <string name="battle">%s entre %s et %s</string>
     <string name="actionBattle">%s fait %d</string>
@@ -29,6 +30,7 @@
     <string name="godAttack">Dieu attaque le village pour %s</string>
     <string name="catinFail">La catin échoue lamentablement … %s boit %s</string>
     <string name="catinIntervention">La catin s\'interpose !</string>
+    <string name="gourgandineIntervention">La gourgandine s\'interpose !</string>
     <string name="heroIntervention">Le héros s\'interpose !</string>
     <string name="oraclePrediction">L\'oracle prédit le coup du héros</string>
     <string name="noGod">Il n\'y a pas de dieu …</string>
@@ -38,7 +40,7 @@
     <string name="heroWin">DIEU EST VAINCU !!!! %s boit %s !</string>
     <string name="godWin">LE HEROS EST FOUDROYE !!!! %s SEC !!!!  %s donne %s !</string>
     <string name="heroFail">Le héros échoue à sauver le village %s boit %s et %s donne %s</string>
-    <string name="godFail">Le héros se sacrifie pour le village %s boit %s</string>
+    <string name="godFail">Le héros arrive à se sauver %s donne %s</string>
 
     <string name="roleHero">Héros</string>
     <string name="roleGod">Dieu</string>
@@ -58,4 +60,7 @@
     <string name="roleAttack">Dieu attaque le village !</string>
     <string name="roleDrink">Tu donnes !</string>
     <string name="roleAllDrink">Tout le monde boit !</string>
+    <string name="diceModification">Il modifie le %d en %d</string>
+    <string name="devinAction">Le devin modifie les dés !</string>
+    <string name="noDiceModification">il choisit de ne rien modifier</string>
 </resources>

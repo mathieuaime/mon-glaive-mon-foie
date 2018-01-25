@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.R;
+import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.event.ActionEvent;
 import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.event.drink.TakeDrinkEvent;
@@ -21,8 +22,11 @@ import java.util.List;
  */
 
 public abstract class BattleEvent extends ActionEvent {
-    BattleEvent(Player... player) {
+    private List<Event> events;
+
+    BattleEvent(List<Event> events, Player... player) {
         super(1, player);
+        this.events = events;
     }
 
     @Override
@@ -31,6 +35,7 @@ public abstract class BattleEvent extends ActionEvent {
             StringBuilder builder = new StringBuilder();
             Player player1 = players.get(0);
             Player player2 = players.get(1);
+            Player apprenti = players.get(2);
 
             Context context = App.getAppContext();
 
@@ -62,7 +67,9 @@ public abstract class BattleEvent extends ActionEvent {
                     .append(NEW_LINE);
 
             List<Event> events = new ArrayList<>();
-            events.add(new TakeDrinkEvent(nb * Math.abs(player1Die.getValue() - player2Die.getValue()), looser));
+            int drink = nb * Math.abs(player1Die.getValue() - player2Die.getValue());
+            events.add(new TakeDrinkEvent(drink, looser));
+            PlayerDecider.takeDrinkIfExist(events, apprenti, drink);
             for (Event e : events) {
                 builder.append(e.play()).append(NEW_LINE);
             }

@@ -15,8 +15,8 @@ import java.util.List;
  */
 
 public class GodBattleEvent extends BattleEvent {
-    public GodBattleEvent(Player... player) {
-        super(player);
+    public GodBattleEvent(List<Event> events, Player... player) {
+        super(events, player);
     }
 
     @Override

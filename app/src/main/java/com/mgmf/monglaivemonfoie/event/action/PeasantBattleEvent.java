@@ -14,8 +14,8 @@ import java.util.List;
  */
 
 public class PeasantBattleEvent extends BattleEvent {
-    public PeasantBattleEvent(Player... player) {
-        super(player);
+    public PeasantBattleEvent(List<Event> events, Player... player) {
+        super(events, player);
     }
 
     @Override

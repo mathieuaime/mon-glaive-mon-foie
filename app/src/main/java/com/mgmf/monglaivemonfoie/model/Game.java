@@ -3,6 +3,7 @@ package com.mgmf.monglaivemonfoie.model;
 import com.mgmf.monglaivemonfoie.decider.PlayerDecider;
 import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
+import com.mgmf.monglaivemonfoie.util.PlayerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,4 +64,7 @@ public class Game {
         return players;
     }
 
+    public Player getApprentice() {
+        return PlayerUtil.getPlayerByRole(Role.Apprenti, players);
+    }
 }
