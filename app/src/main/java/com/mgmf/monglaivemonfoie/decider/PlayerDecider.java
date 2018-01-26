@@ -227,7 +227,7 @@ public class PlayerDecider {
                 }
                 break;
             case Attaque:
-                events.add(new AttackEvent(d1, events, players.toArray(new Player[players.size()])));
+                events.add(new AttackEvent(d1, players.toArray(new Player[players.size()])));
                 break;
             case AllDrink:
                 events.add(new GeneralDrinkEvent(d1 * 10 + d2, specialDice.getValue()));
@@ -326,6 +326,20 @@ public class PlayerDecider {
         boolean useless = player.hasRole(role);
 
         if (!useless) {
+            Player player1 = PlayerUtil.getPlayerByRole(role, players);
+            if (player1 != null) {
+                player1.removeRole(role);
+                events.add(new UnassignEvent(new Assignment(player1, role)));
+
+                if (role == Role.Demon) {
+                    events.add(new TakeDrinkEvent(666, player1) {
+                        @Override
+                        public String play() {
+                            return super.play() + "\nParce que tu t'es bien fait ken sur ce coup là";
+                        }
+                    });
+                }
+            }
             player.removeAllRoles();
             assignRoleToPlayer(events, new Assignment(player, RoleUtil.getRoleFromSuperRole(role)), players);
             player.addRole(role);
