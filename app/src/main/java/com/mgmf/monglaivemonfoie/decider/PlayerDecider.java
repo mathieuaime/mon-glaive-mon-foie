@@ -176,7 +176,7 @@ public class PlayerDecider {
                 }
                 break;
             case Prisonnier:
-                if (!PlayerUtil.isRole(role, players)) {
+                if (!PlayerUtil.existRole(role, players)) {
                     player.removeAllRoles();
                     player.addRole(role);
                     events.add(new JailInDrinkEvent(specialDice.getValue(), player));
@@ -293,7 +293,7 @@ public class PlayerDecider {
 
         Role superRole = RoleUtil.getSuperRoleFromRole(role);
 
-        if (superRole == null || !PlayerUtil.isRole(superRole, players)) {
+        if (superRole == null || !PlayerUtil.existRole(superRole, players)) {
             for (Player p : players) {
                 if (p.getId() == player.getId()) {
                     useless = !assignRoleToPlayer(events, assignment);
