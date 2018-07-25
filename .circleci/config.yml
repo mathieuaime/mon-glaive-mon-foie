@@ -40,4 +40,5 @@ jobs:
 
       # run tests!
       - run: ./gradlew test
+      - run: ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN
 
