@@ -14,5 +14,7 @@ public abstract class Event {
     protected int nb;
     protected List<Player> players;
 
+    protected static final char NEW_LINE = '\n';
+
     public abstract String play();
 }

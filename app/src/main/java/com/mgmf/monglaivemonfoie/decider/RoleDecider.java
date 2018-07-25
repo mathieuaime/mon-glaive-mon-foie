@@ -12,7 +12,10 @@ import com.mgmf.monglaivemonfoie.validator.DiceValidator;
  */
 
 public class RoleDecider {
-    public static Role decideRole(Dice dice1, Dice dice2, Dice specialDice) {
+    private RoleDecider() {
+    }
+
+    private static Role decideRole(Dice dice1, Dice dice2, Dice specialDice) {
         DiceValidator.validate(dice1, dice2, specialDice);
 
         int d1 = Math.max(dice1.getValue(), dice2.getValue());
@@ -23,7 +26,7 @@ public class RoleDecider {
         return RoleUtil.getRoles().get(index);
     }
 
-    public static Role decideRole(Dice[] dices) {
+    public static Role decideRole(Dice... dices) {
         if (dices.length < 3) {
             throw new IllegalArgumentException("Three dices are required to decided a role");
         }

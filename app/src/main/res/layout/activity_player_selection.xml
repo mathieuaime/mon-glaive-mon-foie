@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/player_input"
                 android:padding="10dp"
-                android:text="+"
+                android:text="@string/plus"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 

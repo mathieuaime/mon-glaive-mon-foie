@@ -9,6 +9,7 @@ package com.mgmf.monglaivemonfoie.model;
 public class Assignment {
     private Player player;
     private Role role;
+
     public Assignment(Player player, Role role) {
         this.player = player;
         this.role = role;

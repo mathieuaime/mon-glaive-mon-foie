@@ -12,7 +12,6 @@ import java.util.List;
  */
 
 public abstract class AssignEvent extends Event {
-
     private List<Assignment> assignments;
 
     protected AssignEvent(Assignment... assignments) {
@@ -29,11 +28,7 @@ public abstract class AssignEvent extends Event {
                 builder.append('\n');
             }
 
-            builder.append(a.getPlayer().getName())
-                    .append(" ")
-                    .append(getAction())
-                    .append(" ")
-                    .append(a.getRole());
+            builder.append(String.format("%s %s %s", a.getPlayer().getName(), getAction(), a.getRole()));
         }
         return builder.toString();
     }

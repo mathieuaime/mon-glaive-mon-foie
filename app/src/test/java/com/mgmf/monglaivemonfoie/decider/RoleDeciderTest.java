@@ -1,14 +1,28 @@
 package com.mgmf.monglaivemonfoie.decider;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+
+import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.model.Dice;
 import com.mgmf.monglaivemonfoie.model.Role;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -17,7 +31,27 @@ import static org.mockito.Mockito.when;
  *
  * @author Mathieu Aimé
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(App.class)
 public class RoleDeciderTest {
+
+    @Mock
+    private Context mockApplicationContext;
+    @Mock
+    private Resources mockContextResources;
+    @Mock
+    private SharedPreferences mockSharedPreferences;
+
+    @Before
+    public void setupTests() {
+        MockitoAnnotations.initMocks(this);
+
+        PowerMockito.mockStatic(App.class);
+        PowerMockito.when(App.getAppContext()).thenReturn(mockApplicationContext);
+        when(mockApplicationContext.getResources()).thenReturn(mockContextResources);
+        when(mockApplicationContext.getSharedPreferences(anyString(), anyInt())).thenReturn(mockSharedPreferences);
+        when(mockContextResources.getString(anyInt())).thenReturn("mocked string");
+    }
 
     @Test
     public void decideSuperRole() throws Exception {
@@ -80,6 +114,14 @@ public class RoleDeciderTest {
                 assertEquals(roles.get(10 * i + j), RoleDecider.decideRole(dice1, dice2, specialDice));
             }
         }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void decideRoleWithNotEnoughtDice() throws Exception {
+        Dice dice1 = mock(Dice.class);
+        Dice dice2 = mock(Dice.class);
+
+        RoleDecider.decideRole(dice1, dice2);
     }
 
 }

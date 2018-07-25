@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 
 public class PlayerUtil {
-    public static boolean isRole(Role role, Collection<Player> players) {
+    public static boolean existRole(Role role, Collection<Player> players) {
         for (Player p : players) {
             if (p.hasRole(role)) {
                 return true;
