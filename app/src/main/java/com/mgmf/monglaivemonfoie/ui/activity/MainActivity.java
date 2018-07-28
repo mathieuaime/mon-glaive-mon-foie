@@ -19,7 +19,7 @@ import com.mgmf.monglaivemonfoie.R;
 import com.mgmf.monglaivemonfoie.decider.RoleDecider;
 import com.mgmf.monglaivemonfoie.event.Event;
 import com.mgmf.monglaivemonfoie.event.action.PeasantBattleEvent;
-import com.mgmf.monglaivemonfoie.model.Dice;
+import com.mgmf.monglaivemonfoie.model.Dices;
 import com.mgmf.monglaivemonfoie.model.Game;
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.model.Role;
@@ -78,9 +78,9 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            Dice[] dices = game.getDices();
-            die1ImageView.setImageResource(getDiceDrawable(dices[0].getValue()));
-            die2ImageView.setImageResource(getDiceDrawable(dices[1].getValue()));
+            Dices dices = game.getDices();
+            die1ImageView.setImageResource(getDiceDrawable(dices.getDice1().getValue()));
+            die2ImageView.setImageResource(getDiceDrawable(dices.getDice2().getValue()));
         }
 
         @Override
@@ -107,7 +107,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         @Override
         public void onAnimationEnd(Animation animation) {
             roleTextView.setText(RoleDecider.decideRole(game.getDices()).toString());
-            specialDieImageView.setImageResource(getDiceDrawable(game.getDices()[2].getValue()));
+            specialDieImageView.setImageResource(getDiceDrawable(game.getDices().getSpecialDice().getValue()));
             displayNextEvent();
         }
 
@@ -185,10 +185,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
             String display = event.play();
 
-            Dice[] dices = game.getDices();
-            die1ImageView.setImageResource(getDiceDrawable(dices[0].getValue()));
-            die2ImageView.setImageResource(getDiceDrawable(dices[1].getValue()));
-            specialDieImageView.setImageResource(getDiceDrawable(dices[2].getValue()));
+            Dices dices = game.getDices();
+            die1ImageView.setImageResource(getDiceDrawable(dices.getDice1().getValue()));
+            die2ImageView.setImageResource(getDiceDrawable(dices.getDice2().getValue()));
+            specialDieImageView.setImageResource(getDiceDrawable(dices.getSpecialDice().getValue()));
 
             String[] displays = display.split("\n");
 

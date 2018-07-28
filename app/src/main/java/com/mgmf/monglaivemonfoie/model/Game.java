@@ -43,11 +43,11 @@ public class Game {
     public List<Event> play() {
         Player player = players.get(actualPlayer);
         actualPlayer = (actualPlayer + 1) % nbPlayers;
-        return PlayerDecider.play(player, dice1, dice2, specialDice, players);
+        return PlayerDecider.play(player, getDices(), players);
     }
 
-    public Dice[] getDices() {
-        return new Dice[]{dice1, dice2, specialDice};
+    public Dices getDices() {
+        return new Dices(dice1, dice2, specialDice);
     }
 
     public Player getPreviousPlayer() {

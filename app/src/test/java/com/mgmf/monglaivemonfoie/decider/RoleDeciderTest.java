@@ -6,6 +6,7 @@ import android.content.res.Resources;
 
 import com.mgmf.monglaivemonfoie.App;
 import com.mgmf.monglaivemonfoie.model.Dice;
+import com.mgmf.monglaivemonfoie.model.Dices;
 import com.mgmf.monglaivemonfoie.model.Role;
 
 import org.junit.Before;
@@ -58,6 +59,7 @@ public class RoleDeciderTest {
         Dice dice1 = mock(Dice.class);
         Dice dice2 = mock(Dice.class);
         Dice specialDice = mock(Dice.class);
+        Dices dices = new Dices(dice1, dice2, specialDice);
 
         Map<Integer, Role> roles = new HashMap<>();
         roles.put(1, Role.CLOCHARD);
@@ -72,7 +74,7 @@ public class RoleDeciderTest {
             when(dice2.getValue()).thenReturn(i);
             when(specialDice.getValue()).thenReturn(i);
 
-            assertEquals(RoleDecider.decideRole(dice1, dice2, specialDice), roles.get(i));
+            assertEquals(RoleDecider.decideRole(dices), roles.get(i));
         }
     }
 
@@ -81,6 +83,7 @@ public class RoleDeciderTest {
         Dice dice1 = mock(Dice.class);
         Dice dice2 = mock(Dice.class);
         Dice specialDice = mock(Dice.class);
+        Dices dices = new Dices(dice1, dice2, specialDice);
 
         Map<Integer, Role> roles = new HashMap<>();
         roles.put(21, Role.HEROS);
@@ -111,7 +114,7 @@ public class RoleDeciderTest {
                 when(dice2.getValue()).thenReturn(j);
                 when(specialDice.getValue()).thenReturn(i == 1 ? 2 : 1);
 
-                assertEquals(roles.get(10 * i + j), RoleDecider.decideRole(dice1, dice2, specialDice));
+                assertEquals(roles.get(10 * i + j), RoleDecider.decideRole(dices));
             }
         }
     }
@@ -120,8 +123,9 @@ public class RoleDeciderTest {
     public void decideRoleWithNotEnoughtDice() throws Exception {
         Dice dice1 = mock(Dice.class);
         Dice dice2 = mock(Dice.class);
+        Dices dices = new Dices(dice1, dice2, null);
 
-        RoleDecider.decideRole(dice1, dice2);
+        RoleDecider.decideRole(dices);
     }
 
 }

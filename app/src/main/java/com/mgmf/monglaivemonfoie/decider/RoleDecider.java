@@ -28,6 +28,9 @@ public class RoleDecider {
     }
 
     public static Role decideRole(Dices dices) {
+        if(dices.getDice1() == null || dices.getDice2() == null || dices.getSpecialDice() == null) {
+            throw new IllegalArgumentException("Dices should not be null");
+        }
         return decideRole(dices.getDice1(), dices.getDice2(), dices.getSpecialDice());
     }
 }
