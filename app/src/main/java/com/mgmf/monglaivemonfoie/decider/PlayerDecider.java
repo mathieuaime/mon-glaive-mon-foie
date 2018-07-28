@@ -17,6 +17,7 @@ import com.mgmf.monglaivemonfoie.event.drink.TakeDrinkEvent;
 import com.mgmf.monglaivemonfoie.event.drink.UselessDrinkEvent;
 import com.mgmf.monglaivemonfoie.model.Assignment;
 import com.mgmf.monglaivemonfoie.model.Dice;
+import com.mgmf.monglaivemonfoie.model.Dices;
 import com.mgmf.monglaivemonfoie.model.Player;
 import com.mgmf.monglaivemonfoie.model.Role;
 import com.mgmf.monglaivemonfoie.util.DiceUtil;
@@ -39,13 +40,11 @@ public class PlayerDecider {
     private PlayerDecider() {
     }
 
-    private static List<Event> assignRoleToPlayer(Role role, Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players) {
+    private static List<Event> assignRoleToPlayer(Role role, Player player, Dices dices, Collection<Player> players) {
 
         List<Event> events = new ArrayList<>();
-        int d1 = Math.max(dice1.getValue(), dice2.getValue());
-        int d2 = Math.min(dice1.getValue(), dice2.getValue());
 
-        playDevinRole(dice1, dice2, specialDice, players, events);
+        playDevinRole(dices, players, events);
 
         Player apprenti = PlayerUtil.getPlayerByRole(Role.APPRENTI, players);
         Player imperatrice = PlayerUtil.getPlayerByRole(Role.IMPERATRICE, players);
@@ -64,99 +63,37 @@ public class PlayerDecider {
         //Super role
         Player clochard = PlayerUtil.getPlayerByRole(Role.CLOCHARD, players);
         Player demon = PlayerUtil.getPlayerByRole(Role.DEMON, players);
-        boolean endTurn = playPrisonierRole(role, player, dice1, dice2, specialDice, players, events, apprenti);
+        boolean endTurn = playPrisonierRole(role, player, dices, players, events, apprenti);
 
         if (!endTurn) {
+            Dice specialDice = dices.getSpecialDice();
             takeDrinkIfExist(events, clochard, specialDice.getValue());
 
             if (demon != null) {
                 events.add(new GiveDrinkEvent(specialDice.getValue(), demon));
                 takeDrinkIfExist(events, apprenti, specialDice.getValue());
                 giveDrinkIfExist(events, imperatrice, specialDice.getValue());
-                gourgandineInterpose(events, player, gourgandine);
+                playGourgandineRole(events, player, gourgandine);
             }
 
-            applyRole(role, player, players, events, d1, d2, specialDice.getValue(), apprenti, imperatrice, gourgandine);
+            applyRole(role, player, players, events, dices, apprenti, imperatrice, gourgandine);
         }
 
         return events;
     }
 
-    private static boolean playPrisonierRole(Role role, Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players, List<Event> events, Player apprenti) {
-        //Prisoner
-        int numberOfThree = DiceUtil.numberOf(3, dice1, dice2, specialDice);
-        //if the dices have almost one 3
-        if (numberOfThree > 0 && !role.equals(Role.PRISONNIER)) {
-            if (player.hasRole(Role.PRISONNIER) && !(numberOfThree == 1 && specialDice.getValue() == 3)) {
-                if (removeRoleToPlayer(events, player, Role.PRISONNIER) && !role.equals(Role.ATTACK)) {
-                    events.add(new JailOutDrinkEvent(specialDice.getValue(), player));
-                    return true;
-                }
-            } else {
-                Player prisonier = PlayerUtil.getPlayerByRole(Role.PRISONNIER, players);
-                if (prisonier != null) {
-                    events.add(new TakeDrinkEvent(numberOfThree, prisonier));
-                    takeDrinkIfExist(events, apprenti, numberOfThree);
-                }
-            }
-        }
-        return false;
-    }
-
-    private static void playDevinRole(Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players, List<Event> events) {
-        Player devin = PlayerUtil.getPlayerByRole(Role.DEVIN, players);
-
-        if (devin != null) {
-            events.add(new Event() {
-                @Override
-                public String play() {
-                    StringBuilder builder = new StringBuilder();
-
-                    int die = DiceUtil.random();
-                    Dice[] dice = {dice1, dice2, specialDice};
-                    Dice dieToModify = dice[new Random().nextInt(dice.length)];
-
-                    Context context = App.getAppContext();
-
-                    builder.append(context.getString(R.string.devinAction)).append(NEW_LINE);
-                    int compare = Integer.compare(die, dieToModify.getValue());
-
-                    if (compare == 0) {
-                        builder.append(context.getString(R.string.noDiceModification));
-                    } else {
-                        builder.append(String.format(context.getString(R.string.diceModification), dieToModify.getValue(), dieToModify.getValue() + compare));
-                    }
-
-                    dieToModify.modifyValue(die);
-                    return builder.toString();
-                }
-            });
-        }
-    }
-
-    private static void applyRole(Role role, Player player, Collection<Player> players, List<Event> events, int d1, int d2, int specialDice, Player apprenti, Player imperatrice, Player gourgandine) {
+    private static void applyRole(Role role, Player player, Collection<Player> players, List<Event> events, Dices dices, Player apprenti, Player imperatrice, Player gourgandine) {
         boolean isPrisoner = player.hasRole(Role.PRISONNIER);
+        int specialDice = dices.getSpecialDice().getValue();
+        int d1 = dices.getGreater().getValue();
+        int d2 = dices.getLower().getValue();
 
         Assignment assignment = new Assignment(player, role);
         UselessDrinkEvent uselessDrinkEvent = new UselessDrinkEvent(specialDice, player);
 
         switch (role) {
             case HEROS:
-                if (player.hasRole(Role.PRISONNIER, Role.DIEU)) {
-                    events.add(uselessDrinkEvent);
-                    takeDrinkIfExist(events, apprenti, specialDice);
-                } else {
-                    if (assignRoleToPlayer(events, assignment, players)) {
-                        events.add(uselessDrinkEvent);
-                        takeDrinkIfExist(events, apprenti, 1);
-                    } else {
-                        removeRoleToPlayer(events, player, Role.PRINCESSE);
-                        Player ecuyer = PlayerUtil.getPlayerByRole(Role.ECUYER, players);
-                        if (ecuyer != null) {
-                            removeRoleToPlayer(events, ecuyer, Role.ECUYER);
-                        }
-                    }
-                }
+                applyHeroRole(player, players, events, specialDice, apprenti, assignment, uselessDrinkEvent);
                 break;
             case PRINCESSE:
                 if (player.hasRole(Role.PRISONNIER, Role.HEROS) || assignRoleToPlayer(events, assignment, players)) {
@@ -184,7 +121,7 @@ public class PlayerDecider {
                     events.add(new GiveDrinkEvent(d2, player));
                     takeDrinkIfExist(events, apprenti, d2);
                     giveDrinkIfExist(events, imperatrice, d2);
-                    gourgandineInterpose(events, player, gourgandine);
+                    playGourgandineRole(events, player, gourgandine);
                 }
                 break;
             case ORACLE:
@@ -241,7 +178,7 @@ public class PlayerDecider {
                         events.add(new GiveDrinkEvent(d2, player));
                         takeDrinkIfExist(events, apprenti, d2);
                         giveDrinkIfExist(events, imperatrice, d2);
-                        gourgandineInterpose(events, player, gourgandine);
+                        playGourgandineRole(events, player, gourgandine);
                     }
                 }
                 break;
@@ -257,13 +194,84 @@ public class PlayerDecider {
                 takeDrinkIfExist(events, apprenti, isPrisoner ? 1 : d2);
                 if (!isPrisoner) {
                     giveDrinkIfExist(events, imperatrice, d2);
-                    gourgandineInterpose(events, player, gourgandine);
+                    playGourgandineRole(events, player, gourgandine);
                 }
                 break;
         }
     }
 
-    private static void gourgandineInterpose(List<Event> events, Player player, Player gourgandine) {
+    private static void applyHeroRole(Player player, Collection<Player> players, List<Event> events, int specialDice, Player apprenti, Assignment assignment, UselessDrinkEvent uselessDrinkEvent) {
+        if (player.hasRole(Role.PRISONNIER, Role.DIEU)) {
+            events.add(uselessDrinkEvent);
+            takeDrinkIfExist(events, apprenti, specialDice);
+        } else {
+            if (assignRoleToPlayer(events, assignment, players)) {
+                events.add(uselessDrinkEvent);
+                takeDrinkIfExist(events, apprenti, 1);
+            } else {
+                removeRoleToPlayer(events, player, Role.PRINCESSE);
+                Player ecuyer = PlayerUtil.getPlayerByRole(Role.ECUYER, players);
+                if (ecuyer != null) {
+                    removeRoleToPlayer(events, ecuyer, Role.ECUYER);
+                }
+            }
+        }
+    }
+
+    private static boolean playPrisonierRole(Role role, Player player, Dices dices, Collection<Player> players, List<Event> events, Player apprenti) {
+        Dice specialDice = dices.getSpecialDice();
+        //Prisoner
+        int numberOfThree = DiceUtil.numberOf(3, dices.getDice1(), dices.getDice2(), specialDice);
+        //if the dices have almost one 3
+        if (numberOfThree > 0 && !role.equals(Role.PRISONNIER)) {
+            if (player.hasRole(Role.PRISONNIER) && !(numberOfThree == 1 && specialDice.getValue() == 3)) {
+                if (removeRoleToPlayer(events, player, Role.PRISONNIER) && !role.equals(Role.ATTACK)) {
+                    events.add(new JailOutDrinkEvent(specialDice.getValue(), player));
+                    return true;
+                }
+            } else {
+                Player prisonier = PlayerUtil.getPlayerByRole(Role.PRISONNIER, players);
+                if (prisonier != null) {
+                    events.add(new TakeDrinkEvent(numberOfThree, prisonier));
+                    takeDrinkIfExist(events, apprenti, numberOfThree);
+                }
+            }
+        }
+        return false;
+    }
+
+    private static void playDevinRole(Dices dices, Collection<Player> players, List<Event> events) {
+        Player devin = PlayerUtil.getPlayerByRole(Role.DEVIN, players);
+
+        if (devin != null) {
+            events.add(new Event() {
+                @Override
+                public String play() {
+                    StringBuilder builder = new StringBuilder();
+
+                    int die = DiceUtil.random();
+                    Dice[] dice = {dices.getDice1(), dices.getDice2(), dices.getSpecialDice()};
+                    Dice dieToModify = dice[new Random().nextInt(dice.length)];
+
+                    Context context = App.getAppContext();
+
+                    builder.append(context.getString(R.string.devinAction)).append(NEW_LINE);
+                    int compare = Integer.compare(die, dieToModify.getValue());
+
+                    if (compare == 0) {
+                        builder.append(context.getString(R.string.noDiceModification));
+                    } else {
+                        builder.append(String.format(context.getString(R.string.diceModification), dieToModify.getValue(), dieToModify.getValue() + compare));
+                    }
+
+                    dieToModify.modifyValue(die);
+                    return builder.toString();
+                }
+            });
+        }
+    }
+
+    private static void playGourgandineRole(List<Event> events, Player player, Player gourgandine) {
         if (gourgandine != null) {
             events.add(new Event() {
                 @Override
@@ -375,7 +383,7 @@ public class PlayerDecider {
                     events.add(new GiveDrinkEvent(6, player));
                     takeDrinkIfExist(events, apprenti, 6);
                     giveDrinkIfExist(events, imperatrice, 6);
-                    gourgandineInterpose(events, player, gourgandine);
+                    playGourgandineRole(events, player, gourgandine);
                 }
             }
         }
@@ -395,7 +403,7 @@ public class PlayerDecider {
         return remove;
     }
 
-    public static List<Event> play(Player player, Dice dice1, Dice dice2, Dice specialDice, Collection<Player> players) {
-        return assignRoleToPlayer(RoleDecider.decideRole(dice1, dice2, specialDice), player, dice1, dice2, specialDice, players);
+    public static List<Event> play(Player player, Dices dices, Collection<Player> players) {
+        return assignRoleToPlayer(RoleDecider.decideRole(dices), player, dices, players);
     }
 }

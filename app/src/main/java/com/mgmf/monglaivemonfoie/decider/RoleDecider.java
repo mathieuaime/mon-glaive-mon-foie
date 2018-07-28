@@ -1,6 +1,7 @@
 package com.mgmf.monglaivemonfoie.decider;
 
 import com.mgmf.monglaivemonfoie.model.Dice;
+import com.mgmf.monglaivemonfoie.model.Dices;
 import com.mgmf.monglaivemonfoie.model.Role;
 import com.mgmf.monglaivemonfoie.util.RoleUtil;
 import com.mgmf.monglaivemonfoie.validator.DiceValidator;
@@ -26,10 +27,7 @@ public class RoleDecider {
         return RoleUtil.getRoles().get(index);
     }
 
-    public static Role decideRole(Dice... dices) {
-        if (dices.length < 3) {
-            throw new IllegalArgumentException("Three dices are required to decided a role");
-        }
-        return decideRole(dices[0], dices[1], dices[2]);
+    public static Role decideRole(Dices dices) {
+        return decideRole(dices.getDice1(), dices.getDice2(), dices.getSpecialDice());
     }
 }

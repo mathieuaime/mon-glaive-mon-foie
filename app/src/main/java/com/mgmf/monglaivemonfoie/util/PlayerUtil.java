@@ -13,7 +13,7 @@ import java.util.Collection;
 
 public class PlayerUtil {
 
-    public PlayerUtil() {}
+    private PlayerUtil() {}
 
     public static boolean existRole(Role role, Collection<Player> players) {
         for (Player p : players) {
