@@ -22,11 +22,9 @@ import java.util.List;
  */
 
 public abstract class BattleEvent extends ActionEvent {
-    private List<Event> events;
 
-    BattleEvent(List<Event> events, Player... player) {
+    BattleEvent(Player... player) {
         super(1, player);
-        this.events = events;
     }
 
     @Override

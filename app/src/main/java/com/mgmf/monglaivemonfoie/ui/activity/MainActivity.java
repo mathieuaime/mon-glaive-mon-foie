@@ -62,10 +62,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private boolean shake = true;
     private long lastUpdate = -1;
-    private float last_x;
-    private float last_y;
+    private float lastX;
+    private float lastY;
 
-    private float last_z;
+    private float lastZ;
     private Animation diceAnimation;
 
     private Animation specialDiceAnimation;
@@ -73,6 +73,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     final Animation.AnimationListener animationListener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
+            //Nothing to do
         }
 
         @Override
@@ -96,7 +97,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             playerTextView.setText(game.getActualPlayer().getName());
             List<Event> events = new ArrayList<>();
             if (sameDice) {
-                events.add(new PeasantBattleEvent(events, game.getPreviousPlayer(), game.getActualPlayer(), game.getApprentice()));
+                events.add(new PeasantBattleEvent(game.getPreviousPlayer(), game.getActualPlayer(), game.getApprentice()));
             }
             events.addAll(game.play());
             eventIterator = events.iterator();
@@ -269,18 +270,19 @@ public class MainActivity extends Activity implements SensorEventListener {
                 float x = event.values[0];
                 float y = event.values[1];
                 float z = event.values[2];
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+                float speed = Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime * 10000;
                 if (speed > SHAKE_THRESHOLD && shake) { //the screen was shaked
                     play();
                 }
-                last_x = x;
-                last_y = y;
-                last_z = z;
+                lastX = x;
+                lastY = y;
+                lastZ = z;
             }
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        //Nothing to do
     }
 }

@@ -14,12 +14,13 @@ import java.util.List;
  */
 
 public class PeasantBattleEvent extends BattleEvent {
-    public PeasantBattleEvent(List<Event> events, Player... player) {
-        super(events, player);
+    public PeasantBattleEvent(Player... player) {
+        super(player);
     }
 
     @Override
     protected void actionToWinner(Player winner, List<Event> events) {
+        // To implements
     }
 
     @Override

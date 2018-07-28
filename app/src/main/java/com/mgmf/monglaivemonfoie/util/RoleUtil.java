@@ -20,50 +20,50 @@ public class RoleUtil {
     private static Map<Integer, Role> roles = null;
     private static Map<Integer, Role> superRoles = null;
 
-    private synchronized static void populateRoles() {
+    private static synchronized void populateRoles() {
         if (roles == null) {
             Map<Integer, Role> r = new HashMap<>();
-            r.put(11, Role.Heros);
-            r.put(21, Role.Oracle);
-            r.put(22, Role.Heros);
-            r.put(31, Role.Ecuyer);
-            r.put(32, Role.Prisonnier);
-            r.put(33, Role.Heros);
-            r.put(41, Role.Catin);
-            r.put(42, Role.AllDrink);
-            r.put(43, Role.Attaque);
-            r.put(44, Role.Dieu);
-            r.put(51, Role.AllDrink);
-            r.put(52, Role.Attaque);
-            r.put(53, Role.Aubergiste);
-            r.put(54, Role.Princesse);
-            r.put(55, Role.Dieu);
-            r.put(61, Role.Attaque);
-            r.put(62, Role.Drink);
-            r.put(63, Role.Drink);
-            r.put(64, Role.Drink);
-            r.put(65, Role.Dragon);
-            r.put(66, Role.Dieu);
-            r.put(111, Role.Clochard);
-            r.put(222, Role.Devin);
-            r.put(333, Role.Apprenti);
-            r.put(444, Role.Gourgandine);
-            r.put(555, Role.Imperatrice);
-            r.put(666, Role.Demon);
+            r.put(11, Role.HEROS);
+            r.put(21, Role.ORACLE);
+            r.put(22, Role.HEROS);
+            r.put(31, Role.ECUYER);
+            r.put(32, Role.PRISONNIER);
+            r.put(33, Role.HEROS);
+            r.put(41, Role.CATIN);
+            r.put(42, Role.ALL_DRINK);
+            r.put(43, Role.ATTACK);
+            r.put(44, Role.DIEU);
+            r.put(51, Role.ALL_DRINK);
+            r.put(52, Role.ATTACK);
+            r.put(53, Role.AUBERGISTE);
+            r.put(54, Role.PRINCESSE);
+            r.put(55, Role.DIEU);
+            r.put(61, Role.ATTACK);
+            r.put(62, Role.DRINK);
+            r.put(63, Role.DRINK);
+            r.put(64, Role.DRINK);
+            r.put(65, Role.DRAGON);
+            r.put(66, Role.DIEU);
+            r.put(111, Role.CLOCHARD);
+            r.put(222, Role.DEVIN);
+            r.put(333, Role.APPRENTI);
+            r.put(444, Role.GOURGANDINE);
+            r.put(555, Role.IMPERATRICE);
+            r.put(666, Role.DEMON);
 
             roles = Collections.unmodifiableMap(r);
         }
     }
 
-    private synchronized static void populateSuperRoles() {
+    private static synchronized void populateSuperRoles() {
         if(superRoles == null) {
             Map<Integer, Role> r = new HashMap<>();
-            r.put(111, Role.Clochard);
-            r.put(222, Role.Devin);
-            r.put(333, Role.Apprenti);
-            r.put(444, Role.Gourgandine);
-            r.put(555, Role.Imperatrice);
-            r.put(666, Role.Demon);
+            r.put(111, Role.CLOCHARD);
+            r.put(222, Role.DEVIN);
+            r.put(333, Role.APPRENTI);
+            r.put(444, Role.GOURGANDINE);
+            r.put(555, Role.IMPERATRICE);
+            r.put(666, Role.DEMON);
 
             superRoles = Collections.unmodifiableMap(r);
         }
@@ -71,18 +71,18 @@ public class RoleUtil {
 
     public static Role getRoleFromSuperRole(Role role) {
         switch (role) {
-            case Demon:
-                return Role.Dieu;
-            case Imperatrice:
-                return Role.Princesse;
-            case Gourgandine:
-                return Role.Catin;
-            case Apprenti:
-                return Role.Ecuyer;
-            case Devin:
-                return Role.Oracle;
-            case Clochard:
-                return Role.Heros;
+            case DEMON:
+                return Role.DIEU;
+            case IMPERATRICE:
+                return Role.PRINCESSE;
+            case GOURGANDINE:
+                return Role.CATIN;
+            case APPRENTI:
+                return Role.ECUYER;
+            case DEVIN:
+                return Role.ORACLE;
+            case CLOCHARD:
+                return Role.HEROS;
             default:
                 return role;
         }
@@ -90,18 +90,18 @@ public class RoleUtil {
 
     public static Role getSuperRoleFromRole(Role role) {
         switch (role) {
-            case Dieu:
-                return Role.Demon;
-            case Princesse:
-                return Role.Imperatrice;
-            case Catin:
-                return Role.Gourgandine;
-            case Ecuyer:
-                return Role.Apprenti;
-            case Oracle:
-                return Role.Devin;
-            case Heros:
-                return Role.Clochard;
+            case DIEU:
+                return Role.DEMON;
+            case PRINCESSE:
+                return Role.IMPERATRICE;
+            case CATIN:
+                return Role.GOURGANDINE;
+            case ECUYER:
+                return Role.APPRENTI;
+            case ORACLE:
+                return Role.DEVIN;
+            case HEROS:
+                return Role.CLOCHARD;
             default:
                 return null;
         }

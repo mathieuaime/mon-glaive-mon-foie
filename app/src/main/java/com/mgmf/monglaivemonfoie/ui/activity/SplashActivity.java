@@ -20,6 +20,7 @@ public class SplashActivity extends Activity {
                     super.run();
                     sleep(2000);
                 } catch (Exception ignored) {
+                    //Ignore
                 } finally {
                     Intent i = new Intent(SplashActivity.this, PlayerSelectionActivity.class);
                     startActivity(i);

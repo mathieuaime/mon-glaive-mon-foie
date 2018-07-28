@@ -10,24 +10,24 @@ import com.mgmf.monglaivemonfoie.R;
  */
 
 public enum Role {
-    Heros(R.string.roleHero),
-    Dieu(R.string.roleGod),
-    Oracle(R.string.roleOracle),
-    Ecuyer(R.string.roleSquire),
-    Prisonnier(R.string.rolePrisoner),
-    Catin(R.string.roleWhore),
-    Aubergiste(R.string.roleInnkeeper),
-    Princesse(R.string.rolePrincess),
-    Dragon(R.string.roleDragon),
-    Clochard(R.string.roleBum),
-    Devin(R.string.roleSoothsayer),
-    Apprenti(R.string.roleApprentice),
-    Gourgandine(R.string.roleHussy),
-    Imperatrice(R.string.roleEmpress),
-    Demon(R.string.roleDevil),
-    Attaque(R.string.roleAttack),
-    Drink(R.string.roleDrink),
-    AllDrink(R.string.roleAllDrink);
+    HEROS(R.string.roleHero),
+    DIEU(R.string.roleGod),
+    ORACLE(R.string.roleOracle),
+    ECUYER(R.string.roleSquire),
+    PRISONNIER(R.string.rolePrisoner),
+    CATIN(R.string.roleWhore),
+    AUBERGISTE(R.string.roleInnkeeper),
+    PRINCESSE(R.string.rolePrincess),
+    DRAGON(R.string.roleDragon),
+    CLOCHARD(R.string.roleBum),
+    DEVIN(R.string.roleSoothsayer),
+    APPRENTI(R.string.roleApprentice),
+    GOURGANDINE(R.string.roleHussy),
+    IMPERATRICE(R.string.roleEmpress),
+    DEMON(R.string.roleDevil),
+    ATTACK(R.string.roleAttack),
+    DRINK(R.string.roleDrink),
+    ALL_DRINK(R.string.roleAllDrink);
 
     private final String displayName;
 

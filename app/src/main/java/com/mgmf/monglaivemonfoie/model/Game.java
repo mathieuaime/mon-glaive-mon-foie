@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class Game {
-    private final int NB_PLAYERS;
+    private final int nbPlayers;
 
     private final Dice dice1 = new Dice();
     private final Dice dice2 = new Dice();
@@ -25,7 +25,7 @@ public class Game {
     private int actualPlayer = 0;
 
     public Game(List<String> players) {
-        this.NB_PLAYERS = players.size();
+        this.nbPlayers = players.size();
         for (String player : players) {
             this.players.add(new Player(player));
         }
@@ -42,7 +42,7 @@ public class Game {
 
     public List<Event> play() {
         Player player = players.get(actualPlayer);
-        actualPlayer = (actualPlayer + 1) % NB_PLAYERS;
+        actualPlayer = (actualPlayer + 1) % nbPlayers;
         return PlayerDecider.play(player, dice1, dice2, specialDice, players);
     }
 
@@ -51,8 +51,8 @@ public class Game {
     }
 
     public Player getPreviousPlayer() {
-        int index = (actualPlayer - 1) % NB_PLAYERS;
-        if (index < 0) index += NB_PLAYERS;
+        int index = (actualPlayer - 1) % nbPlayers;
+        if (index < 0) index += nbPlayers;
         return players.get(index);
     }
 
@@ -65,6 +65,6 @@ public class Game {
     }
 
     public Player getApprentice() {
-        return PlayerUtil.getPlayerByRole(Role.Apprenti, players);
+        return PlayerUtil.getPlayerByRole(Role.APPRENTI, players);
     }
 }

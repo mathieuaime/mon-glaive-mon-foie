@@ -13,6 +13,9 @@ import java.util.Random;
  */
 
 public class DiceUtil {
+
+    private DiceUtil() {}
+
     public static final int FACES = 6;
 
     public static void roll(Dice... dices) {

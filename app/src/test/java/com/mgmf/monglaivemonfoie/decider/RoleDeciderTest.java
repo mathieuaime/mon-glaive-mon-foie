@@ -60,12 +60,12 @@ public class RoleDeciderTest {
         Dice specialDice = mock(Dice.class);
 
         Map<Integer, Role> roles = new HashMap<>();
-        roles.put(1, Role.Clochard);
-        roles.put(2, Role.Devin);
-        roles.put(3, Role.Apprenti);
-        roles.put(4, Role.Gourgandine);
-        roles.put(5, Role.Imperatrice);
-        roles.put(6, Role.Demon);
+        roles.put(1, Role.CLOCHARD);
+        roles.put(2, Role.DEVIN);
+        roles.put(3, Role.APPRENTI);
+        roles.put(4, Role.GOURGANDINE);
+        roles.put(5, Role.IMPERATRICE);
+        roles.put(6, Role.DEMON);
 
         for (int i = 1; i <= 6; ++i) {
             when(dice1.getValue()).thenReturn(i);
@@ -83,27 +83,27 @@ public class RoleDeciderTest {
         Dice specialDice = mock(Dice.class);
 
         Map<Integer, Role> roles = new HashMap<>();
-        roles.put(21, Role.Heros);
-        roles.put(21, Role.Oracle);
-        roles.put(22, Role.Heros);
-        roles.put(31, Role.Ecuyer);
-        roles.put(32, Role.Prisonnier);
-        roles.put(33, Role.Heros);
-        roles.put(41, Role.Catin);
-        roles.put(42, Role.AllDrink);
-        roles.put(43, Role.Attaque);
-        roles.put(44, Role.Dieu);
-        roles.put(51, Role.AllDrink);
-        roles.put(52, Role.Attaque);
-        roles.put(53, Role.Aubergiste);
-        roles.put(54, Role.Princesse);
-        roles.put(55, Role.Dieu);
-        roles.put(61, Role.Attaque);
-        roles.put(62, Role.Drink);
-        roles.put(63, Role.Drink);
-        roles.put(64, Role.Drink);
-        roles.put(65, Role.Dragon);
-        roles.put(66, Role.Dieu);
+        roles.put(21, Role.HEROS);
+        roles.put(21, Role.ORACLE);
+        roles.put(22, Role.HEROS);
+        roles.put(31, Role.ECUYER);
+        roles.put(32, Role.PRISONNIER);
+        roles.put(33, Role.HEROS);
+        roles.put(41, Role.CATIN);
+        roles.put(42, Role.ALL_DRINK);
+        roles.put(43, Role.ATTACK);
+        roles.put(44, Role.DIEU);
+        roles.put(51, Role.ALL_DRINK);
+        roles.put(52, Role.ATTACK);
+        roles.put(53, Role.AUBERGISTE);
+        roles.put(54, Role.PRINCESSE);
+        roles.put(55, Role.DIEU);
+        roles.put(61, Role.ATTACK);
+        roles.put(62, Role.DRINK);
+        roles.put(63, Role.DRINK);
+        roles.put(64, Role.DRINK);
+        roles.put(65, Role.DRAGON);
+        roles.put(66, Role.DIEU);
 
         for (int i = 6; i > 0; --i) {
             for (int j = i - 1; j > 0; --j) {
